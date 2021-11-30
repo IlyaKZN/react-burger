@@ -1,0 +1,52 @@
+.burgerConstructor {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.elementsList {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.element {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 13.5px;
+}
+
+.element > div {
+  width: 100%;
+}
+
+.container {
+  max-height: 464px;
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgb(47, 47, 55);
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgb(133, 133, 173);
+}
+
+.priceContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmContainer {
+  display: flex;
+  justify-content: end;
+}
