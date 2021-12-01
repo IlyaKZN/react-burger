@@ -40,7 +40,7 @@ class BurgerConstructor extends React.Component {
           </li>
           <div className={`${burgerConstructorStyles.elementsList} ${burgerConstructorStyles.container}`}>
             {this.state.selectedItems.map((el, index) => (
-              <li key={index} className={`${burgerConstructorStyles.element} pr-2`}>
+              <li key={el._id} className={`${burgerConstructorStyles.element} pr-2`}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   text={el.name}
@@ -75,7 +75,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array.isRequired
 };
 
 export default BurgerConstructor;

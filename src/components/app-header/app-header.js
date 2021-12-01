@@ -1,10 +1,7 @@
 import React from "react";
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from './app-header.module.css';
 import ButtonHeader from "../button-header/button-header";
-import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 
 class AppHeader extends React.Component {
 
@@ -15,13 +12,13 @@ class AppHeader extends React.Component {
           <nav className={headerStyles.navigation}>
             <ul className={headerStyles.navigationList}>
               <li className={`${headerStyles.navigationItem} pr-5`} >
-                <ButtonHeader icon={BurgerIcon} initial='primary'>Конструктор</ButtonHeader>
+                <ButtonHeader name='burger' initial='primary'>Конструктор</ButtonHeader>
               </li>
               <li className={`${headerStyles.navigationItem} pl-5 pr-5`}>
-                <ButtonHeader icon={ListIcon} initial='secondary'>Лента заказов</ButtonHeader>
+                <ButtonHeader name='list' initial='secondary'>Лента заказов</ButtonHeader>
               </li>
               <li className={`${headerStyles.navigationItem} pl-5`}>
-                <ButtonHeader icon={ProfileIcon} initial='secondary'>Личный кабинет</ButtonHeader>
+                <ButtonHeader name='profile' initial='secondary'>Личный кабинет</ButtonHeader>
               </li>
             </ul>
           </nav>
