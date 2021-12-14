@@ -1,0 +1,17 @@
+.content {
+  max-width: 1240px;
+  margin: 0 auto 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+}
+
+.title {
+  font-family: 'JetBrainsMono', "Arial", "Impact", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 40px;
+  grid-row-start: 0;
+  grid-row-end: 1;
+}

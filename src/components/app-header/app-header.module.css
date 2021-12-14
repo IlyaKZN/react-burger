@@ -1,0 +1,42 @@
+.header {
+  width: 100%;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(28, 28, 33);
+  box-sizing: border-box;
+}
+
+.content {
+  max-width: 1240px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.navigation {
+  width: 100%;
+}
+
+.navigationList {
+  display: flex;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.navigationItem:last-of-type {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
