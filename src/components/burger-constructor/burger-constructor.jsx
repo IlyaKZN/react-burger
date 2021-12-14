@@ -5,41 +5,54 @@ import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
-class BurgerConstructor extends React.Component {
+function BurgerConstructor(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedItems: [],
-      bun: {}
-    }
-  }
+  const [state, setState] = React.useState({ selectedItems: [], bun: {}, modalVisible: false })
 
-  componentDidMount() {
+  React.useEffect(() => {
     for(let i = 1; i < 12; i++) {
-      this.setState(previousState => ({
-        selectedItems: [...previousState.selectedItems, this.props.data[i]]
+      setState(previousState => ({
+        selectedItems: [...previousState.selectedItems, props.data[i]],
+        ...state.bun
     }));
     }
-    this.setState({ bun: this.props.data[0] });
+    setState(previousState => ({ ...previousState, bun: props.data[0] }));
+  }, [])
+
+  const handleOpenModal = () => {
+    setState({ ...state, modalVisible: true });
   }
 
-  render() {
-    return(
+  const handleCloseModal = () => {
+    setState({ ...state, modalVisible: false });
+  }
+
+  const modal = (
+    <>
+      <Modal onClose={handleCloseModal}>
+        <OrderDetails />
+      </Modal>
+    </>
+  )
+
+  return(
+    <>
       <div className={`${burgerConstructorStyles.burgerConstructor}`}>
         <ul className={`${burgerConstructorStyles.elementsList}`}>
           <li className={`${burgerConstructorStyles.element} mr-4`}>
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${this.state.bun.name} (верх)`}
-              price={this.state.bun.price}
-              thumbnail={this.state.bun.image}
+              text={`${state.bun.name} (верх)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
           <div className={`${burgerConstructorStyles.elementsList} ${burgerConstructorStyles.container}`}>
-            {this.state.selectedItems.map((el, index) => (
+            {state.selectedItems.map((el, index) => (
               <li key={el._id} className={`${burgerConstructorStyles.element} pr-2`}>
                 <DragIcon type="primary" />
                 <ConstructorElement
@@ -54,9 +67,9 @@ class BurgerConstructor extends React.Component {
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${this.state.bun.name} (низ)`}
-              price={this.state.bun.price}
-              thumbnail={this.state.bun.image}
+              text={`${state.bun.name} (низ)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
         </ul>
@@ -65,13 +78,14 @@ class BurgerConstructor extends React.Component {
             <p className="text text_type_digits-medium">610</p>
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="large">
-            Нажми на меня
+          <Button onClick={handleOpenModal} type="primary" size="large">
+            Оформить заказ
           </Button>
         </div>
       </div>
-    )
-  }
+      {state.modalVisible && modal}
+    </>
+  )
 }
 
 BurgerConstructor.propTypes = {

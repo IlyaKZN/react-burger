@@ -1,0 +1,26 @@
+.image {
+  width: 480px;
+  height: 240px;
+}
+
+.grid {
+  width: 520px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+}
+
+.text {
+  color: rgba(133, 133, 173, 1)
+}
+
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
