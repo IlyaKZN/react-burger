@@ -24,7 +24,7 @@ function BurgerConstructor() {
     data.forEach((el) => {
       if(el.type === 'bun' && !bun) {
         bun = el;
-        totalPrice += el.price;
+        totalPrice += el.price * 2;
       } else {
         if(el.type !== 'bun') {
           selectedItems.push(el);
