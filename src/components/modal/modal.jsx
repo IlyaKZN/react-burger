@@ -10,18 +10,18 @@ function Modal(props) {
 
   React.useEffect(()=>{
 
+    const checkButton = (evt) => {
+      if (evt.key === 'Escape') {
+        props.onClose()
+      }
+    }
+
     document.addEventListener("keydown", checkButton);
 
     return () => {
       document.removeEventListener("keydown", checkButton)
     }
   }, [])
-
-  const checkButton = (evt) => {
-    if (evt.key === 'Escape') {
-      props.onClose()
-    }
-  }
 
   return ReactDOM.createPortal(
     ( 

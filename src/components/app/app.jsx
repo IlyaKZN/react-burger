@@ -3,12 +3,15 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import AppStyles from "./app.module.css";
+import { IngredientsContext } from "../../services/ingredients-context";
 
 function App() {
 
   const url = 'https://norma.nomoreparties.space/api'
 
-  const [state, setState] = React.useState({ data: [], isLoading: false, isError: false })
+  const [state, setState] = React.useState({ data: [], isLoading: true, isError: false });
+
+  const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
     getIngredientsData();
@@ -18,12 +21,15 @@ function App() {
     setState({...state, isLoading: true})
     fetch(`${url}/ingredients`)
       .then(checkResponse)
-      .then((res) => {setState({
-        ...state,
-        data: res.data,
-        isLoading: false,
-        isError: false
-      })})
+      .then((res) => {
+        setData(res.data)
+        setState({
+          ...state,
+          data: res.data,
+          isLoading: false,
+          isError: false
+        })
+      })
       .catch((err) => {
         console.log(err)
         setState({
@@ -53,8 +59,10 @@ function App() {
         {state.isError ? 'Произошла ошибка' : null}
         {!state.isLoading ? 
           <>
-            <BurgerIngredients data={state.data} />
-            <BurgerConstructor data={state.data} />
+            <IngredientsContext.Provider value={data}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </IngredientsContext.Provider>
           </> : null }
       </div>
     </>
