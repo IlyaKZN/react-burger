@@ -43,7 +43,7 @@ function BurgerIngredients() {
         }));
       }
     });
-  }, []);
+  }, [data]);
 
   const handleOpenModal = (el) => {
     setState({ ...state, modalVisible: true, modalData: el });

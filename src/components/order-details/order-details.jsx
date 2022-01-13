@@ -1,6 +1,7 @@
 import React from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import doneImg from "../../images/doneImg.svg";
+import PropTypes from 'prop-types';
 
 function OrderDetails(props) {
   return (
@@ -13,5 +14,11 @@ function OrderDetails(props) {
     </>
   )
 }
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.oneOfType([
+    PropTypes.number
+  ]),
+};
 
 export default OrderDetails

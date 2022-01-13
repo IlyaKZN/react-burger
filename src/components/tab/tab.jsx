@@ -1,5 +1,6 @@
 import React from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from 'prop-types';
 
 const Tabs = ({onTabClick, current, sections}) => {
   return (
@@ -22,5 +23,11 @@ const Tabs = ({onTabClick, current, sections}) => {
     </div>
   )
 }
+
+Tabs.propTypes = {
+  onTabClick: PropTypes.func.isRequired,
+  current: PropTypes.number.isRequired,
+  sections: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 export default Tabs;

@@ -8,12 +8,13 @@ import PropTypes from 'prop-types';
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { IngredientsContext } from "../../services/ingredients-context";
+import { BASE_URL } from "../../utils/constants";
+import { checkResponse } from "../../utils/utils";
 
 function BurgerConstructor() {
 
   const [state, setState] = React.useState({ selectedItems: [], bun: {}, modalVisible: false, totalPrice: 0, orderNumber: null })
   const data = React.useContext(IngredientsContext);
-  const url = 'https://norma.nomoreparties.space/api'
 
   React.useEffect(() => {
 
@@ -33,25 +34,9 @@ function BurgerConstructor() {
       }
     })
 
-    setState(previousState => ({ ...previousState, totalPrice: totalPrice }))
+    setState(previousState => ({ ...previousState, totalPrice: totalPrice, bun: bun, selectedItems: selectedItems }))
 
-    setState(previousState => ({ ...previousState, bun: bun }));
-
-    setState(previousState => ({
-      ...previousState,
-      selectedItems: selectedItems
-  }));
-
-  }, [])
-
-  const handleOpenModal = () => {
-    setState({ ...state, modalVisible: true });
-    getOrderNumber();
-  }
-
-  const handleCloseModal = () => {
-    setState({ ...state, modalVisible: false });
-  }
+  }, [data])
 
   const getOrderNumber = () => {
     const idList = [];
@@ -61,7 +46,7 @@ function BurgerConstructor() {
       idList.push(el._id);
     })
 
-    fetch(`${url}/orders`, {
+    fetch(`${BASE_URL}/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -72,19 +57,16 @@ function BurgerConstructor() {
     })
       .then(checkResponse)
       .then((res) => {
-        setState(previousState => ({ ...previousState, orderNumber: res.order.number }))
+        setState(previousState => ({ ...previousState, orderNumber: res.order.number, modalVisible: true }))
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
+        alert('При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку');
       })
   }
 
-  const checkResponse = (res) => {
-    if (!res.ok) {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    } else {
-      return res.json();
-    }
+  const handleCloseModal = () => {
+    setState({ ...state, modalVisible: false });
   }
 
   const modal = (
@@ -135,7 +117,7 @@ function BurgerConstructor() {
             <p className="text text_type_digits-medium">{state.totalPrice}</p>
             <CurrencyIcon type="primary" />
           </div>
-          <Button onClick={handleOpenModal} type="primary" size="large">
+          <Button onClick={getOrderNumber} type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
