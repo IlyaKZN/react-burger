@@ -7,23 +7,62 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { IngredientsContext } from "../../services/ingredients-context";
+import { BASE_URL } from "../../utils/constants";
+import { checkResponse } from "../../utils/utils";
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
 
-  const [state, setState] = React.useState({ selectedItems: [], bun: {}, modalVisible: false })
+  const [state, setState] = React.useState({ selectedItems: [], bun: {}, modalVisible: false, totalPrice: 0, orderNumber: null })
+  const data = React.useContext(IngredientsContext);
 
   React.useEffect(() => {
-    for(let i = 1; i < 12; i++) {
-      setState(previousState => ({
-        selectedItems: [...previousState.selectedItems, props.data[i]],
-        ...state.bun
-    }));
-    }
-    setState(previousState => ({ ...previousState, bun: props.data[0] }));
-  }, [])
 
-  const handleOpenModal = () => {
-    setState({ ...state, modalVisible: true });
+    let bun;
+    const selectedItems = [];
+    let totalPrice = 0;
+
+    data.forEach((el) => {
+      if(el.type === 'bun' && !bun) {
+        bun = el;
+        totalPrice += el.price * 2;
+      } else {
+        if(el.type !== 'bun') {
+          selectedItems.push(el);
+          totalPrice += el.price;
+        }
+      }
+    })
+
+    setState(previousState => ({ ...previousState, totalPrice: totalPrice, bun: bun, selectedItems: selectedItems }))
+
+  }, [data])
+
+  const getOrderNumber = () => {
+    const idList = [];
+    
+    idList.push(state.bun._id)
+    state.selectedItems.forEach(el => {
+      idList.push(el._id);
+    })
+
+    fetch(`${BASE_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        "ingredients": idList
+      })
+    })
+      .then(checkResponse)
+      .then((res) => {
+        setState(previousState => ({ ...previousState, orderNumber: res.order.number, modalVisible: true }))
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку');
+      })
   }
 
   const handleCloseModal = () => {
@@ -33,7 +72,7 @@ function BurgerConstructor(props) {
   const modal = (
     <>
       <Modal onClose={handleCloseModal}>
-        <OrderDetails />
+        <OrderDetails orderNumber={state.orderNumber} />
       </Modal>
     </>
   )
@@ -75,10 +114,10 @@ function BurgerConstructor(props) {
         </ul>
         <div className={`${burgerConstructorStyles.confirmContainer} mr-4`}>
           <div className={`${burgerConstructorStyles.priceContainer} mr-10`}>
-            <p className="text text_type_digits-medium">610</p>
+            <p className="text text_type_digits-medium">{state.totalPrice}</p>
             <CurrencyIcon type="primary" />
           </div>
-          <Button onClick={handleOpenModal} type="primary" size="large">
+          <Button onClick={getOrderNumber} type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
@@ -87,9 +126,5 @@ function BurgerConstructor(props) {
     </>
   )
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired
-};
 
 export default BurgerConstructor;

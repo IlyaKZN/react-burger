@@ -3,46 +3,41 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import AppStyles from "./app.module.css";
+import { IngredientsContext } from "../../services/ingredients-context";
+import { BASE_URL } from "../../utils/constants";
+import { checkResponse } from "../../utils/utils";
 
 function App() {
 
-  const url = 'https://norma.nomoreparties.space/api'
-
-  const [state, setState] = React.useState({ data: [], isLoading: false, isError: false })
+  const [state, setState] = React.useState({ data: [], isLoading: true, isError: false });
 
   React.useEffect(() => {
+
+    const getIngredientsData = () => {
+      setState({...state, isLoading: true})
+      fetch(`${BASE_URL}/ingredients`)
+        .then(checkResponse)
+        .then((res) => {
+          setState({
+            ...state,
+            data: res.data,
+            isLoading: false,
+            isError: false
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          setState({
+            ...state,
+            isError: true,
+            isLoading: false
+          })
+        })
+    }
+
     getIngredientsData();
   }, [])
 
-  const getIngredientsData = () => {
-    setState({...state, isLoading: true})
-    fetch(`${url}/ingredients`)
-      .then(checkResponse)
-      .then((res) => {setState({
-        ...state,
-        data: res.data,
-        isLoading: false,
-        isError: false
-      })})
-      .catch((err) => {
-        console.log(err)
-        setState({
-          ...state,
-          isError: true,
-          isLoading: false
-        })
-      })
-  }
-
-  const checkResponse = (res) => {
-    if (!res.ok) {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    } else {
-      return res.json();
-    }
-  }
-
-  
 
   return (
     <>
@@ -53,8 +48,10 @@ function App() {
         {state.isError ? 'Произошла ошибка' : null}
         {!state.isLoading ? 
           <>
-            <BurgerIngredients data={state.data} />
-            <BurgerConstructor data={state.data} />
+            <IngredientsContext.Provider value={state.data}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </IngredientsContext.Provider>
           </> : null }
       </div>
     </>
