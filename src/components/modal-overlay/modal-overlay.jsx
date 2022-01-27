@@ -3,6 +3,7 @@ import overlayStyles from "./modal-overlay.module.css";
 import PropTypes from 'prop-types';
 
 function ModalOverlay(props) {
+
   return (
     <div className={overlayStyles.modalOverlay} onClick={props.onClose}></div>
   )

@@ -2,11 +2,10 @@ import React from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import Tabs from "../tab/tab";
 import IngredientsList from "../ingredients-list/ingredients-list";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { useRef } from "react";
-import { IngredientsContext } from "../../services/ingredients-context";
+import { useSelector } from 'react-redux';
 
 function BurgerIngredients() {
   const [state, setState] = React.useState({
@@ -16,16 +15,20 @@ function BurgerIngredients() {
     modalData: {},
     modalVisible: false,
     currentSection: 1,
+    elementCountersData: {}
   });
 
-  const data = React.useContext(IngredientsContext);
+  const { ingredients } = useSelector(state => state.ingredientsReducer);
+  const { viewedIngredient } = useSelector(state => state.viewedIngredientReducer);
+  const { selectedIngredients } = useSelector((state) => state.dndReducer);
 
   const ingredientsSection1 = useRef(null);
   const ingredientsSection2 = useRef(null);
   const ingredientsSection3 = useRef(null);
 
+
   React.useEffect(() => {
-    data.forEach((el) => {
+    ingredients.forEach((el) => {
       if (el.type === "bun") {
         setState((previousState) => ({
           ...previousState,
@@ -43,15 +46,27 @@ function BurgerIngredients() {
         }));
       }
     });
-  }, [data]);
+  }, [ingredients]);
 
-  const handleOpenModal = (el) => {
-    setState({ ...state, modalVisible: true, modalData: el });
-  };
+  React.useMemo(() => {
 
-  const handleCloseModal = () => {
-    setState({ ...state, modalVisible: false });
-  };
+    let elementCountersData = {};
+
+    selectedIngredients.forEach((el,index) => {
+      if(Object.keys(elementCountersData).length !== 0 && 
+        Object.keys(elementCountersData).find(element => element === el.data._id)) {
+        elementCountersData = {...elementCountersData, [el.data._id] : elementCountersData[el.data._id]+1}
+      } else {
+        elementCountersData = {...elementCountersData, [el.data._id] : 1 }
+      }
+    })
+
+    setState((previousState) => ({
+      ...previousState,
+      elementCountersData: elementCountersData
+    }));
+
+  }, [selectedIngredients])
 
   const onTabClick = (value, element) => {
     setCurrentSection(value);
@@ -63,8 +78,8 @@ function BurgerIngredients() {
   };
 
   const modal = (
-    <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-      <IngredientDetails data={state.modalData} />
+    <Modal header="Детали ингредиента" typeModal='ingredientDetails'>
+      <IngredientDetails />
     </Modal>
   );
 
@@ -98,25 +113,25 @@ function BurgerIngredients() {
         >
           <IngredientsList
             ref={ingredientsSection1}
-            handleOpenModal={handleOpenModal}
             ingredientsData={state.buns}
             type={"Булки"}
+            elementCountersData={state.elementCountersData}
           />
           <IngredientsList
             ref={ingredientsSection2}
-            handleOpenModal={handleOpenModal}
             ingredientsData={state.sauces}
             type={"Соусы"}
+            elementCountersData={state.elementCountersData}
           />
           <IngredientsList
             ref={ingredientsSection3}
-            handleOpenModal={handleOpenModal}
             ingredientsData={state.mains}
             type={"Основные ингредиенты"}
+            elementCountersData={state.elementCountersData}
           />
         </div>
       </section>
-      {state.modalVisible && modal}
+      {viewedIngredient && modal}
     </>
   );
 }

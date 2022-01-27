@@ -4,33 +4,53 @@ import ModalHeader from "../modal-header/modal-header";
 import modalStyles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from 'prop-types';
+import { useDispatch } from "react-redux";
+import { DELETE_VIEWED_INGREDIENT, DELETE_ORDER_DATA } from "../../services/actions";
 const modalRoot = document.getElementById('react-modals');
 
 function Modal(props) {
 
-  React.useEffect(()=>{
+  const dispatch = useDispatch();
 
-    const checkButton = (evt) => {
-      if (evt.key === 'Escape') {
-        props.onClose()
-      }
-    }
+  React.useEffect(()=>{
 
     document.addEventListener("keydown", checkButton);
 
     return () => {
       document.removeEventListener("keydown", checkButton)
     }
-  }, [props.onClose])
+  }, [])
+
+  const checkButton = (evt) => {
+    if (evt.key === 'Escape' || evt.type === 'click') {
+      checkModalType();
+    }
+  }
+
+  //Проверяем какое именно модальное окно открыто и отправляем нужный action
+  const checkModalType = () => {
+    switch (props.typeModal) {
+      case 'ingredientDetails': {
+        dispatch({
+          type: DELETE_VIEWED_INGREDIENT
+        })
+      }
+      case 'orderNumber': {
+        dispatch({
+          type: DELETE_ORDER_DATA
+        })
+      }
+    }
+  }
 
   return ReactDOM.createPortal(
     ( 
       <>
         <div className={`${modalStyles.modal} pt-10 pr-10 pb-15 pl-10`}>
-          <ModalHeader onClose={props.onClose}>{props.header}</ModalHeader>
+          <ModalHeader onClose={checkButton}>{props.header}</ModalHeader>
           {props.children}
         </div>
-        <ModalOverlay onClose={props.onClose}/>
+        <ModalOverlay onClose={checkButton}/>
       </>
     ),
     modalRoot
@@ -42,7 +62,7 @@ Modal.propTypes = {
   header: PropTypes.oneOfType([
     PropTypes.string.isRequired
   ]),
-  onClose: PropTypes.func.isRequired
+  typeModal: PropTypes.string.isRequired
 };
 
 export default Modal;
