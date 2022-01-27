@@ -20,8 +20,14 @@ export const getOrderNumber = (idList) => {
       "Content-Type": "application/json;charset=utf-8"
     },
     body: JSON.stringify({
-      ingredients: ["60d3b41abdacab0026a733c6","60d3b41abdacab0026a733c9"],
+      ingredients: idList,
     }),
   })
     .then(checkResponse)
+    .catch((err) => {
+      console.log(err);
+      alert(
+        "При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
+      );
+    });
 }

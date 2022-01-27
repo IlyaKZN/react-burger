@@ -3,17 +3,20 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { getOrderNumber } from "../../utils/burger-api.js";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { ADD_ORDER_DATA } from "../../services/actions";
 import EmptyBurgerConstructor from "../empty-burger-constructor/empty-burger-constructor";
 import { useDrop } from "react-dnd";
-import { ADD_SELECTED_ITEM, DELETE_OLD_BUN, DELETE_SELECTED_ITEM, REORDER_INGREDIENTS} from "../../services/actions";
+import {
+  ADD_SELECTED_ITEM,
+  DELETE_OLD_BUN,
+  DELETE_SELECTED_ITEM,
+  REORDER_INGREDIENTS,
+} from "../../services/actions";
 import { useMemo } from "react";
+import { getOrder } from "../../services/actions";
 
 import SelectedIngredientCard from "../selected-ingredient-card/selected-ingredient-card";
 
@@ -25,7 +28,6 @@ function BurgerConstructor() {
     totalPrice: 0,
     orderNumber: null,
   });
-
 
   const { orderNumber } = useSelector((state) => state.orderReducer);
   const { selectedIngredients } = useSelector((state) => state.dndReducer);
@@ -70,59 +72,47 @@ function BurgerConstructor() {
       return;
     } else if (item.el.type === "bun" && state.bun) {
       dispatch({
-        type: DELETE_OLD_BUN
+        type: DELETE_OLD_BUN,
       });
       dispatch({
         type: ADD_SELECTED_ITEM,
-        payload: { item }
+        payload: { item },
       });
     } else {
       dispatch({
         type: ADD_SELECTED_ITEM,
-        payload: { item }
+        payload: { item },
       });
     }
   };
 
   const deleteIngredient = (item) => {
-    console.log('test')
+    console.log("test");
     dispatch({
       type: DELETE_SELECTED_ITEM,
       item,
     });
-  }
+  };
 
   const moveCard = (dragIndex, hoverIndex) => {
     const newCards = [...state.selectedItems];
     newCards.splice(hoverIndex, 0, newCards.splice(dragIndex, 1)[0]);
-    newCards.splice(0, 0, state.bun)
+    newCards.splice(0, 0, state.bun);
     dispatch({
       type: REORDER_INGREDIENTS,
-      newCards
+      newCards,
     });
-  }
+  };
 
   const createOrder = () => {
     const idList = [];
 
     idList.push(state.bun._id);
     state.selectedItems.forEach((el) => {
-      idList.push(el._id);
+      idList.push(el.data._id);
     });
 
-    getOrderNumber(idList)
-      .then((res) => {
-        dispatch({
-          type: ADD_ORDER_DATA,
-          res,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(
-          "При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
-        );
-      });
+    dispatch(getOrder(idList));
   };
 
   const handleCloseModal = () => {
@@ -159,7 +149,14 @@ function BurgerConstructor() {
                 className={`${burgerConstructorStyles.elementsList} ${burgerConstructorStyles.container}`}
               >
                 {state.selectedItems.map((el, index) => (
-                  <SelectedIngredientCard el={el} deleteIngredient={deleteIngredient} key={el.id} id={el.id} index={index} moveCard={moveCard}/>
+                  <SelectedIngredientCard
+                    el={el}
+                    deleteIngredient={deleteIngredient}
+                    key={el.id}
+                    id={el.id}
+                    index={index}
+                    moveCard={moveCard}
+                  />
                 ))}
               </div>
               <li className={`${burgerConstructorStyles.element} mr-4 mb-10`}>
@@ -189,7 +186,7 @@ function BurgerConstructor() {
           {orderNumber && modal}
         </>
       ) : (
-        <EmptyBurgerConstructor propRef={dropTarget} state={state}/>
+        <EmptyBurgerConstructor propRef={dropTarget} state={state} />
       )}
     </>
   );

@@ -3,8 +3,6 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import AppStyles from "./app.module.css";
-import { IngredientsContext } from "../../services/ingredients-context";
-import { getIngredientsData } from "../../utils/burger-api.js";
 import { useDispatch } from 'react-redux';
 import { getIngredients } from "../../services/actions";
 import { useSelector } from 'react-redux';
