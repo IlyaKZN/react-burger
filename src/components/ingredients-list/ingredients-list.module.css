@@ -5,25 +5,3 @@
   padding: 0;
   list-style-type: none;
 }
-
-.image {
-  height: 120px;
-  width: 240px;
-}
-
-.priceContainer {
-  justify-content: center;
-  display: grid;
-  grid-template-columns: min-content min-content;
-  column-gap: 9px;
-}
-
-.name {
-  min-height: 48px;
-  text-align: center;
-}
-
-.card {
-  position: relative;
-  cursor: pointer;
-}
