@@ -1,21 +1,27 @@
-import React from "react";
+import React, { FC } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
 
-const Tabs = ({onTabClick, current, sections}) => {
+interface ITabsProps {
+  onTabClick: Function;
+  current: string;
+  sections: React.RefObject<HTMLInputElement>[]
+}
+
+const Tabs: FC<ITabsProps> = ({onTabClick, current, sections}) => {
   return (
     <div style={{ display: 'flex' }} className={`mb-10`}>
-      <Tab value={1} active={current === 1} onClick={value => {
+      <Tab value="one" active={current === "one"} onClick={value => {
           onTabClick(value, sections[0])
         }}>
         Булки
       </Tab>
-      <Tab value={2} active={current === 2} onClick={value => {
+      <Tab value="two" active={current === "two"} onClick={value => {
           onTabClick(value, sections[1])
         }}>
         Соусы
       </Tab>
-      <Tab value={3} active={current === 3} onClick={value => {
+      <Tab value="three" active={current === "three"} onClick={value => {
           onTabClick(value, sections[2])
         }}>
         Начинки
@@ -23,11 +29,5 @@ const Tabs = ({onTabClick, current, sections}) => {
     </div>
   )
 }
-
-Tabs.propTypes = {
-  onTabClick: PropTypes.func.isRequired,
-  current: PropTypes.number.isRequired,
-  sections: PropTypes.arrayOf(PropTypes.object).isRequired
-};
 
 export default Tabs;

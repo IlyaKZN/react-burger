@@ -1,10 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import doneImg from "../../images/doneImg.svg";
-import PropTypes from 'prop-types';
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/types/hooks";
 
-function OrderDetails(props) {
+const OrderDetails: FC = () => {
 
   const { orderNumber } = useSelector(state => state.orderReducer);
 
@@ -18,11 +17,5 @@ function OrderDetails(props) {
     </>
   )
 }
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.oneOfType([
-    PropTypes.number
-  ]),
-};
 
 export default OrderDetails

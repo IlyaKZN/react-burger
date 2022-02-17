@@ -1,9 +1,12 @@
 import emptyContainerStyles from './empty-burger-constructor.module.css';
-import PropTypes from "prop-types";
+import { FC } from 'react';
+import { ConnectDropTarget } from "react-dnd";
 
-function EmptyBurgerConstructor (props) {
+interface IEmptyBurgerConstructorProps {
+  propRef: ConnectDropTarget
+}
 
-  const { propRef } = props;
+const EmptyBurgerConstructor: FC<IEmptyBurgerConstructorProps> = ({ propRef }) => {
 
   return (
     <div ref={propRef} className={emptyContainerStyles.emptyContainer}>
@@ -12,8 +15,5 @@ function EmptyBurgerConstructor (props) {
   )
 }
 
-EmptyBurgerConstructor.propTypes = {
-  propRef: PropTypes.func.isRequired
-};
 
 export default EmptyBurgerConstructor;
