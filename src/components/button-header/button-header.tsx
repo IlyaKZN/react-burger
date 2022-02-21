@@ -23,17 +23,14 @@ const ButtonHeader: FC<IButtonHeaderProps> = ({ name, initial, children }) => {
         return (
           <BurgerIcon type={state.type}/>
         )
-      break;
       case "list":
         return (
           <ListIcon type={state.type}/>
         )
-      break;
       case "profile":
         return (
           <ProfileIcon type={state.type}/>
         )
-      break;
     }
   }
 
