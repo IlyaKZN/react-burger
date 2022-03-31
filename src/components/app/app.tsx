@@ -18,6 +18,7 @@ import { checkUserAuthorization } from "../../services/actions/authorization";
 import { IngredientPage } from "../../pages/ingredient-page";
 import { OrdersPage } from "../../pages/orders";
 import { useLocation, useHistory } from "react-router";
+import { NotFound404 } from "../../pages/not-found404";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 
@@ -91,6 +92,9 @@ const App: FC = () => {
               </DndProvider>
             </> : null }
         </div>
+        </Route>
+        <Route>
+          <NotFound404 />
         </Route>
       </Switch>
       {background && 
