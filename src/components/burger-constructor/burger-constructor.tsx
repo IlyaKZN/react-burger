@@ -18,8 +18,10 @@ import {
 import { useMemo } from "react";
 import { getOrder } from "../../services/actions";
 import { TUniqueIngredientData, TIngredientData } from "../../services/types";
+import { useHistory, useLocation, useRouteMatch } from "react-router";
 
 import SelectedIngredientCard from "../selected-ingredient-card/selected-ingredient-card";
+import { Redirect } from "react-router";
 
 interface IBurgerConstructor {
   selectedItems: {
@@ -43,8 +45,12 @@ const BurgerConstructor: FC = () => {
 
   const { orderNumber } = useSelector((state) => state.orderReducer);
   const { selectedIngredients } = useSelector((state) => state.dndReducer);
+  const { data: userData } = useSelector((state) => state.userReducer)
 
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const { url } = useRouteMatch();
 
   useMemo(() => {
     let bun: {
@@ -97,7 +103,6 @@ const BurgerConstructor: FC = () => {
         payload: { ingredient },
       });
     } else {
-      console.log(ingredient);
       dispatch({
         type: ADD_SELECTED_ITEM,
         payload: { ingredient },
@@ -106,7 +111,6 @@ const BurgerConstructor: FC = () => {
   };
 
   const deleteIngredient = (item: TUniqueIngredientData) => {
-    console.log("test");
     dispatch({
       type: DELETE_SELECTED_ITEM,
       item,
@@ -126,6 +130,12 @@ const BurgerConstructor: FC = () => {
   };
 
   const createOrder = () => {
+
+    if (!userData) {
+      history.replace('/login', { from: url })
+      return
+    }
+
     const idList = [];
     if (state.bun) {
       idList.push(state.bun.data._id);

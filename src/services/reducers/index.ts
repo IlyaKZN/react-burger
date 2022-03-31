@@ -63,18 +63,32 @@ const initialStateViewedIngredient: TInitialStateViewedIngredient = {
   viewedIngredient: null,
 };
 
+type TInitialStateRequestChangePassword = {
+  requestActive: boolean;
+  requestSucces: boolean;
+  requestFailed: boolean;
+};
+
+const initialStateRequestChangePassword: TInitialStateRequestChangePassword = {
+  requestActive: false,
+  requestSucces: false,
+  requestFailed: false,
+};
+
 export const dndReducer = (
   state = initialStateDnd,
   action: TDndActions
 ): TInitialStateDnd => {
   switch (action.type) {
     case ADD_SELECTED_ITEM: {
-      console.log(action.payload)
       return {
         ...state,
         selectedIngredients: [
           ...state.selectedIngredients,
-          { data: action.payload.ingredient.el, id: action.payload.ingredient.id },
+          {
+            data: action.payload.ingredient.el,
+            id: action.payload.ingredient.id,
+          },
         ],
       };
     }
@@ -196,3 +210,5 @@ export const ingredientsReducer = (
     }
   }
 };
+
+

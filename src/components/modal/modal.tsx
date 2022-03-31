@@ -8,6 +8,8 @@ import {
   DELETE_VIEWED_INGREDIENT,
   DELETE_ORDER_DATA,
 } from "../../services/actions";
+import { useRouteMatch, useParams } from "react-router";
+import { useSelector } from "../../services/types/hooks";
 const modalRoot = document.getElementById("react-modals");
 
 interface IModalProps {
@@ -17,7 +19,7 @@ interface IModalProps {
 
 const Modal: FC<IModalProps> = ({ typeModal, header = "", children }) => {
   const dispatch = useDispatch();
-
+  
   React.useEffect(() => {
     document.addEventListener("keydown", checkButton);
 

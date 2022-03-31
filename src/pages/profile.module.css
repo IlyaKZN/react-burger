@@ -1,0 +1,81 @@
+.content {
+  max-width: 1240px;
+  width: 100%;
+  display: flex;
+}
+
+.inputContainer > div {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.inputContainer > div:last-of-type {
+  margin-bottom: 0;
+}
+
+.inputContainer svg {
+  cursor: pointer;
+}
+
+.inputContainer > div > div {
+  width: 100%;
+}
+
+.inputContainer div div div {
+  display: flex;
+  justify-content: end;
+}
+
+.profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+}
+
+.link {
+  text-decoration: none;
+  color: rgba(133, 133, 173, 1);
+  background-color: rgba(133, 133, 173, 0);
+  border: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  opacity: 0.5;
+}
+
+.activeLink {
+  color: white;
+}
+
+.links {
+  margin: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.elementLink {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.elementLink:last-of-type {
+  margin-bottom: 80px;
+}
+
+.inputContainer {
+  width: 480px;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

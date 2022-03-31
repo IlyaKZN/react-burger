@@ -1,12 +1,6 @@
-export const BASE_URL = 'https://norma.nomoreparties.space/api';
-
-const checkResponse = (res: Response) => {
-  if (!res.ok) {
-    return Promise.reject(`Ошибка: ${res.status}`);
-  } else {
-    return res.json();
-  }
-}
+import { checkResponse } from "./api-utils";
+import { BASE_URL } from "./api-utils";
+import { getCookie } from "./cookie-utils";
 
 export const getIngredientsData = () => {
   return fetch(`${BASE_URL}/ingredients`)
@@ -17,11 +11,12 @@ export const getOrderNumber = (idList: string[]) => {
   return fetch(`${BASE_URL}/orders`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json;charset=utf-8"
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: 'Bearer ' + getCookie('accessToken')
     },
     body: JSON.stringify({
       ingredients: idList,
-    }),
+    })
   })
     .then(checkResponse)
     .catch((err) => {
