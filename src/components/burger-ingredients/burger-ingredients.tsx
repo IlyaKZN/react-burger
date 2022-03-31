@@ -1,20 +1,29 @@
-import React from "react";
+import React, { FC } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import Tabs from "../tab/tab";
 import IngredientsList from "../ingredients-list/ingredients-list";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { useRef } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../services/types/hooks";
+import { TIngredientData } from "../../services/types";
 
-function BurgerIngredients() {
-  const [state, setState] = React.useState({
+interface IBurgerIngredients {
+  buns: TIngredientData[],
+  sauces: TIngredientData[],
+  mains: TIngredientData[],
+  currentSection: string,
+  elementCountersData: {
+    [item: string]: number
+  }
+}
+
+const BurgerIngredients: FC = () => {
+  const [state, setState] = React.useState<IBurgerIngredients>({
     buns: [],
     sauces: [],
     mains: [],
-    modalData: {},
-    modalVisible: false,
-    currentSection: 1,
+    currentSection: 'one',
     elementCountersData: {}
   });
 
@@ -22,9 +31,9 @@ function BurgerIngredients() {
   const { viewedIngredient } = useSelector(state => state.viewedIngredientReducer);
   const { selectedIngredients } = useSelector((state) => state.dndReducer);
 
-  const ingredientsSection1 = useRef(null);
-  const ingredientsSection2 = useRef(null);
-  const ingredientsSection3 = useRef(null);
+  const ingredientsSection1 = useRef<HTMLInputElement>(null);
+  const ingredientsSection2 = useRef<HTMLInputElement>(null);
+  const ingredientsSection3 = useRef<HTMLInputElement>(null);
 
 
   React.useEffect(() => {
@@ -50,30 +59,30 @@ function BurgerIngredients() {
 
   React.useMemo(() => {
 
-    let elementCountersData = {};
+    let elementCountersDataLocal:{[item: string]: number} = {};
 
     selectedIngredients.forEach((el,index) => {
-      if(Object.keys(elementCountersData).length !== 0 && 
-        Object.keys(elementCountersData).find(element => element === el.data._id)) {
-        elementCountersData = {...elementCountersData, [el.data._id] : elementCountersData[el.data._id]+1}
+      if(Object.keys(elementCountersDataLocal).length !== 0 && 
+        Object.keys(elementCountersDataLocal).find(element => element === el.data._id)) {
+        elementCountersDataLocal = {...elementCountersDataLocal, [el.data._id] : elementCountersDataLocal[el.data._id]+1}
       } else {
-        elementCountersData = {...elementCountersData, [el.data._id] : 1 }
+        elementCountersDataLocal = {...elementCountersDataLocal, [el.data._id] : 1 }
       }
     })
 
     setState((previousState) => ({
       ...previousState,
-      elementCountersData: elementCountersData
+      elementCountersData: elementCountersDataLocal
     }));
 
   }, [selectedIngredients])
 
-  const onTabClick = (value, element) => {
+  const onTabClick = (value: string, element: { current: HTMLElement }) => {
     setCurrentSection(value);
     element.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const setCurrentSection = (value) => {
+  const setCurrentSection = (value: string) => {
     setState({ ...state, currentSection: value });
   };
 
@@ -98,16 +107,16 @@ function BurgerIngredients() {
         <div
           className={ingredientsStyles.container}
           onScroll={(evt) => {
-            const container = evt.target;
+            const container = evt.target as HTMLElement;
             const scrollPosition = container.scrollTop;
-            const positionOfSection2 = ingredientsSection2.current.offsetTop;
-            const positionOfSection3 = ingredientsSection3.current.offsetTop;
+            const positionOfSection2 = ingredientsSection2.current === null ? 0 : ingredientsSection2.current.offsetTop;
+            const positionOfSection3 = ingredientsSection3.current === null ? 0 : ingredientsSection3.current.offsetTop;
             if (scrollPosition + 350 <= positionOfSection2) {
-              setCurrentSection(1);
+              setCurrentSection('one');
             } else if (scrollPosition + 350 <= positionOfSection3) {
-              setCurrentSection(2);
+              setCurrentSection('two');
             } else {
-              setCurrentSection(3);
+              setCurrentSection('three');
             }
           }}
         >

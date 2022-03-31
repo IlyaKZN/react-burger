@@ -1,28 +1,32 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-card.module.css";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/types/hooks";
 import { ADD_VIEWED_INGREDIENT } from "../../services/actions";
 import { useDrag } from "react-dnd";
-import { useState, useMemo } from "react";
-import { v4 as uuidv4 } from 'uuid';
-import PropTypes from "prop-types";
+import { useState, useMemo, FC } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { TIngredientData } from "../../services/types";
 
-function IngredientCard(props) {
+interface IIngredientCardProps {
+  el: TIngredientData;
+  elementCountersData: {
+    [item: string]: number;
+  };
+}
 
-  const { el, elementCountersData } = props;
-
+const IngredientCard: FC<IIngredientCardProps> = ({ el, elementCountersData }) => {
   const [state, setState] = useState({
-    countIngredient : 0
+    countIngredient: 0,
   });
 
   useMemo(() => {
-    setState({ countIngredient: elementCountersData[el._id] })
-  }, [elementCountersData])
+    setState({ countIngredient: elementCountersData[el._id] });
+  }, [elementCountersData]);
 
   const dispatch = useDispatch();
 
-  const addViewedIngredient = (el) => {
+  const addViewedIngredient = (el: TIngredientData) => {
     dispatch({
       type: ADD_VIEWED_INGREDIENT,
       el,
@@ -61,11 +65,6 @@ function IngredientCard(props) {
       </h4>
     </li>
   );
-}
-
-IngredientCard.propTypes = {
-  el: PropTypes.object.isRequired,
-  elementCountersData: PropTypes.object.isRequired
 };
 
 export default IngredientCard;

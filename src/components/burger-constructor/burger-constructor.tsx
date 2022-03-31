@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/types/hooks";
 import { useDispatch } from "react-redux";
 import EmptyBurgerConstructor from "../empty-burger-constructor/empty-burger-constructor";
 import { useDrop } from "react-dnd";
@@ -17,14 +17,26 @@ import {
 } from "../../services/actions";
 import { useMemo } from "react";
 import { getOrder } from "../../services/actions";
+import { TUniqueIngredientData, TIngredientData } from "../../services/types";
 
 import SelectedIngredientCard from "../selected-ingredient-card/selected-ingredient-card";
 
-function BurgerConstructor() {
-  const [state, setState] = React.useState({
+interface IBurgerConstructor {
+  selectedItems: {
+    data: TIngredientData;
+    id: string;
+  }[];
+  bun?: {
+    data: TIngredientData;
+    id: string;
+  };
+  totalPrice: number;
+  orderNumber: number | null;
+}
+
+const BurgerConstructor: FC = () => {
+  const [state, setState] = React.useState<IBurgerConstructor>({
     selectedItems: [],
-    bun: {},
-    modalVisible: false,
     totalPrice: 0,
     orderNumber: null,
   });
@@ -35,9 +47,15 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
 
   useMemo(() => {
-    let bun;
-    const selectedItems = [];
-    let totalPrice = 0;
+    let bun: {
+      data: TIngredientData;
+      id: string;
+    };
+    const selectedItems: {
+      data: TIngredientData;
+      id: string;
+    }[] = [];
+    let totalPrice: number = 0;
 
     selectedIngredients.forEach((el) => {
       if (el.data.type === "bun") {
@@ -59,34 +77,35 @@ function BurgerConstructor() {
 
   const [, dropTarget] = useDrop({
     accept: "ingredientCard",
-    drop(item) {
-      checkIngredientState(item);
+    drop(ingredient: { el: TIngredientData; id: string }) {
+      checkIngredientState(ingredient);
     },
   });
 
-  const checkIngredientState = (item) => {
+  const checkIngredientState = (ingredient: { el: TIngredientData; id: string; }) => {
     if (
-      selectedIngredients.find((el) => el.id === item.el.id) &&
-      item.el.type === "bun"
+      selectedIngredients.find((el) => el.id === ingredient.id) &&
+      ingredient.el.type === "bun"
     ) {
       return;
-    } else if (item.el.type === "bun" && state.bun) {
+    } else if (state.bun && ingredient.el.type === "bun") {
       dispatch({
         type: DELETE_OLD_BUN,
       });
       dispatch({
         type: ADD_SELECTED_ITEM,
-        payload: { item },
+        payload: { ingredient },
       });
     } else {
+      console.log(ingredient);
       dispatch({
         type: ADD_SELECTED_ITEM,
-        payload: { item },
+        payload: { ingredient },
       });
     }
   };
 
-  const deleteIngredient = (item) => {
+  const deleteIngredient = (item: TUniqueIngredientData) => {
     console.log("test");
     dispatch({
       type: DELETE_SELECTED_ITEM,
@@ -94,10 +113,12 @@ function BurgerConstructor() {
     });
   };
 
-  const moveCard = (dragIndex, hoverIndex) => {
+  const moveCard = (dragIndex: number, hoverIndex: number) => {
     const newCards = [...state.selectedItems];
     newCards.splice(hoverIndex, 0, newCards.splice(dragIndex, 1)[0]);
-    newCards.splice(0, 0, state.bun);
+    if (state.bun) {
+      newCards.splice(0, 0, state.bun);
+    }
     dispatch({
       type: REORDER_INGREDIENTS,
       newCards,
@@ -106,8 +127,9 @@ function BurgerConstructor() {
 
   const createOrder = () => {
     const idList = [];
-
-    idList.push(state.bun._id);
+    if (state.bun) {
+      idList.push(state.bun.data._id);
+    }
     state.selectedItems.forEach((el) => {
       idList.push(el.data._id);
     });
@@ -115,13 +137,9 @@ function BurgerConstructor() {
     dispatch(getOrder(idList));
   };
 
-  const handleCloseModal = () => {
-    setState({ ...state, modalVisible: false });
-  };
-
   const modal = (
     <>
-      <Modal onClose={handleCloseModal} typeModal="orderNumber">
+      <Modal typeModal="orderNumber">
         <OrderDetails />
       </Modal>
     </>
@@ -186,10 +204,10 @@ function BurgerConstructor() {
           {orderNumber && modal}
         </>
       ) : (
-        <EmptyBurgerConstructor propRef={dropTarget} state={state} />
+        <EmptyBurgerConstructor propRef={dropTarget} />
       )}
     </>
   );
-}
+};
 
 export default BurgerConstructor;
