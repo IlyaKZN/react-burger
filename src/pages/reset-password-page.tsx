@@ -1,6 +1,6 @@
 import formStyles from './form.module.css';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { FC, useState, ChangeEvent } from 'react';
+import { FC, useState, ChangeEvent, SyntheticEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { resetPassword } from '../services/actions/authorization';
 import { useDispatch } from 'react-redux';
@@ -32,7 +32,7 @@ export const ResetPasswordPage: FC = () => {
     setValue({ ...value, code: e.target.value } )
   }
 
-  const handleSubmit = (e?: ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (e?: SyntheticEvent) => {
     e?.preventDefault();
     dispatch(resetPassword(value.password, value.code));
   }
@@ -51,7 +51,7 @@ export const ResetPasswordPage: FC = () => {
 
   return (
     <div className={formStyles.wrapper}>
-      <form className={formStyles.form}>
+      <form className={formStyles.form} onSubmit={(e) => handleSubmit(e)}>
         <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
         <PasswordInput onChange={onChangePassword} value={value.password} name={'Введите новый пароль'} />
         <Input
@@ -64,7 +64,7 @@ export const ResetPasswordPage: FC = () => {
           errorText={'Ошибка'}
           size={'default'}
         />
-        <Button type="primary" size="medium" onClick={handleSubmit}>Сохранить</Button>
+        <Button type="primary" size="medium" htmlType='submit' >Сохранить</Button>
         <div className={formStyles.linkContainer}>
           <p className="text text_type_main-default">Вспомнили пароль?</p>
           <Link to={'/login'} className={`${formStyles.link} text text_type_main-default ml-2`}>Войти</Link>

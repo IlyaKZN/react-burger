@@ -325,14 +325,12 @@ export const getUser: AppThunk = () => {
     });
     getUserApi()
       .then((res) => {
-        console.log(res)
         dispatch({
           type: GET_USER_SUCCESS,
           payload: res,
         });
       })
       .catch((err) => {
-        // getUser();
         dispatch({
           type: GET_USER_FAILED,
         });

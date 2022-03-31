@@ -50,18 +50,18 @@ export const LoginPage: FC = () => {
     setValue({...value, password: e.target.value})
   }
   
-  const sumbitForm = (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(login({ email: value.email, password: value.password }))
   }
 
   return (
     <div className={formStyles.wrapper}>
-      <form className={formStyles.form}>
+      <form className={formStyles.form} onSubmit={(e)=> handleSubmit(e)}>
         <h1 className="text text_type_main-medium mb-6">Вход</h1>
-        <EmailInput size="default" onChange={onChangeEmail} value={value.email}/>
+        <EmailInput size="default" onChange={onChangeEmail} value={value.email} name={'email'}/>
         <PasswordInput onChange={onChangePassword} value={value.password} name={'password'} />
-        <Button type="primary" size="medium" onClick={(e) => sumbitForm(e)}>Войти</Button>
+        <Button type="primary" size="medium" htmlType="submit">Войти</Button>
         <div className={formStyles.linkContainer}>
           <p className="text text_type_main-default">Вы — новый пользователь?</p>
           <Link to={'/register'} className={`${formStyles.link} text text_type_main-default ml-2`}>Зарегистрироваться</Link>

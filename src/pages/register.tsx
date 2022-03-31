@@ -29,7 +29,7 @@ export const RegisterPage: FC = () => {
     setValue({...value, name: e.target.value})
   }
 
-  const submitForm = (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     disptach(register({ email: value.email, password: value.password, name: value.name }));
   }
@@ -37,7 +37,7 @@ export const RegisterPage: FC = () => {
 
   return(
     <div className={formStyles.wrapper}>
-      <form className={formStyles.form}>
+      <form className={formStyles.form} onSubmit={(e)=> handleSubmit(e)}>
         <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
         <Input
           type={'text'}
@@ -52,9 +52,9 @@ export const RegisterPage: FC = () => {
           errorText={'Ошибка'}
           size={'default'}
         />
-        <EmailInput size="default" onChange={onChangeEmail} value={value.email}/>
+        <EmailInput size="default" onChange={onChangeEmail} value={value.email} name='email' />
         <PasswordInput onChange={onChangePassword} value={value.password} name={'password'} />
-        <Button type="primary" size="medium" onClick={(e) => submitForm(e)}>Зарегистрироваться</Button>
+        <Button type="primary" size="medium" htmlType='submit' >Зарегистрироваться</Button>
         <div className={formStyles.linkContainer}>
           <p className="text text_type_main-default">Уже зарегистрированы?</p>
           <Link to={'/login'} className={`${formStyles.link} text text_type_main-default ml-2`}>Войти</Link>

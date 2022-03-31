@@ -4,12 +4,8 @@ import ModalHeader from "../modal-header/modal-header";
 import modalStyles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { useDispatch } from "react-redux";
-import {
-  DELETE_VIEWED_INGREDIENT,
-  DELETE_ORDER_DATA,
-} from "../../services/actions";
-import { useRouteMatch, useParams } from "react-router";
-import { useSelector } from "../../services/types/hooks";
+import { DELETE_ORDER_DATA } from "../../services/actions";
+import { useHistory } from "react-router";
 const modalRoot = document.getElementById("react-modals");
 
 interface IModalProps {
@@ -18,8 +14,10 @@ interface IModalProps {
 }
 
 const Modal: FC<IModalProps> = ({ typeModal, header = "", children }) => {
+
   const dispatch = useDispatch();
-  
+  const history = useHistory();
+
   React.useEffect(() => {
     document.addEventListener("keydown", checkButton);
 
@@ -34,14 +32,11 @@ const Modal: FC<IModalProps> = ({ typeModal, header = "", children }) => {
     }
   };
 
-  //Проверяем какое именно модальное окно открыто и отправляем нужный action
   const checkModalType = () => {
     switch (typeModal) {
       case "ingredientDetails":
         {
-          dispatch({
-            type: DELETE_VIEWED_INGREDIENT,
-          });
+          history.goBack();
         }
         break;
       case "orderNumber":

@@ -32,14 +32,6 @@ const IngredientDetails: FC = () => {
     })
   }
 
-  if (!viewedIngredient) {
-    ingredients.forEach((ingredient) => {
-      if(ingredient._id === params.id) {
-        viewedIngredient = ingredient;
-      }
-    })
-  }
-
   return (
     <> 
       {viewedIngredient ? 

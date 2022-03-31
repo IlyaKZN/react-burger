@@ -36,9 +36,13 @@ export const ProfilePage: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setCookies();
+  }, [])
+
+  const setCookies = () => {
     setCookie('initialName', value.name);
     setCookie('initialEmail', value.email);
-  }, [])
+  }
 
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) =>
     setValue({ ...value, password: e.target.value, dataChanged: true });
@@ -52,6 +56,7 @@ export const ProfilePage: FC = () => {
   const onSubmit = (e: SyntheticEvent<Element>) => {
     e.preventDefault();
     setValue({ ...value, dataChanged: false });
+    setCookies();
     dispatch(changeUserData(value.name, value.email, value.password))
   }
 
@@ -105,13 +110,13 @@ export const ProfilePage: FC = () => {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </div>
-        <form className={styles.inputContainer}>
+        <form className={styles.inputContainer} onSubmit={onSubmit}>
           <Input
             type={"text"}
             placeholder={"Имя"}
             onChange={onChangeName}
             icon={"EditIcon"}
-            value={value.name}
+            value={value.name? value.name : 'placeholder'}
             name={"name"}
             error={false}
             // ref={inputRef}
@@ -120,7 +125,7 @@ export const ProfilePage: FC = () => {
             size={"default"}
           />
           <EmailInput
-            value={value.email}
+            value={value.email? value.email : 'placeholder'}
             name={"Логин"}
             onChange={onChangeEmail}
           />
@@ -131,7 +136,7 @@ export const ProfilePage: FC = () => {
           />
           {value.dataChanged? 
             <div className={styles.buttonContainer}>
-              <Button type="primary" size="medium" onClick={(e) => onSubmit(e)}>
+              <Button type="primary" size="medium" htmlType='submit' >
                 Сохранить
               </Button>
               <Button type="primary" size="medium" onClick={onCancel}>

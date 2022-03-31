@@ -45,7 +45,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   if (userData && !needUserAuth) {
     return (
       <Redirect to={{
-        pathname: `${locationState.from ? locationState.from : '/'}`,
+        pathname: `${locationState ? locationState.from : '/'}`,
         state: { from: path }
       }} />
     )

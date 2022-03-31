@@ -2,11 +2,10 @@ import React, { FC } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import Tabs from "../tab/tab";
 import IngredientsList from "../ingredients-list/ingredients-list";
-import Modal from "../modal/modal";
-import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { useRef } from "react";
 import { useSelector } from "../../services/types/hooks";
 import { TIngredientData } from "../../services/types";
+import { useLocation } from "react-router";
 
 interface IBurgerIngredients {
   buns: TIngredientData[],
@@ -28,13 +27,13 @@ const BurgerIngredients: FC = () => {
   });
 
   const { ingredients } = useSelector(state => state.ingredientsReducer);
-  const { viewedIngredient } = useSelector(state => state.viewedIngredientReducer);
   const { selectedIngredients } = useSelector((state) => state.dndReducer);
 
   const ingredientsSection1 = useRef<HTMLInputElement>(null);
   const ingredientsSection2 = useRef<HTMLInputElement>(null);
   const ingredientsSection3 = useRef<HTMLInputElement>(null);
 
+  const location = useLocation();
 
   React.useEffect(() => {
     ingredients.forEach((el) => {
@@ -86,12 +85,6 @@ const BurgerIngredients: FC = () => {
     setState({ ...state, currentSection: value });
   };
 
-  const modal = (
-    <Modal header="Детали ингредиента" typeModal='ingredientDetails'>
-      <IngredientDetails />
-    </Modal>
-  );
-
   return (
     <>
       <section className={ingredientsStyles.burgerIngredients}>
@@ -140,7 +133,6 @@ const BurgerIngredients: FC = () => {
           />
         </div>
       </section>
-      {viewedIngredient && modal}
     </>
   );
 }

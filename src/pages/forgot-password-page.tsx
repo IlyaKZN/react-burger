@@ -1,7 +1,7 @@
 import formStyles from './form.module.css';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, SyntheticEvent, useState } from 'react';
 import { requestPasswordChange } from '../services/actions/authorization';
 import { useDispatch } from 'react-redux';
 import { useSelector } from '../services/types/hooks';
@@ -19,7 +19,7 @@ export const ForgotPasswordPage: FC = () => {
     setValue(e.target.value)
   }
 
-  const handleSubmit = (e?: ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (e?: SyntheticEvent) => {
     e?.preventDefault();
     dispatch(requestPasswordChange(value));
   }
@@ -32,10 +32,10 @@ export const ForgotPasswordPage: FC = () => {
 
   return(
     <div className={formStyles.wrapper}>
-      <form className={formStyles.form}>
+      <form className={formStyles.form} onSubmit={(e) => handleSubmit(e)}>
         <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
-        <EmailInput size="default" onChange={onChangeEmail} value={value}/>
-        <Button type="primary" size="medium" onClick={handleSubmit}>Восстановить</Button>
+        <EmailInput size="default" onChange={onChangeEmail} value={value} name={'email'} />
+        <Button type="primary" size="medium" htmlType='submit' >Восстановить</Button>
         <div className={formStyles.linkContainer}>
           <p className="text text_type_main-default">Вспомнили пароль?</p>
           <Link to={'/login'} className={`${formStyles.link} text text_type_main-default ml-2`}>Войти</Link>
