@@ -39,6 +39,12 @@ export const ProfilePage: FC = () => {
     setCookies();
   }, [])
 
+  if (!data) {
+    return(
+      <p>Wait</p>
+    )
+  }
+
   const setCookies = () => {
     setCookie('initialName', value.name);
     setCookie('initialEmail', value.email);
@@ -69,11 +75,7 @@ export const ProfilePage: FC = () => {
     dispatch(logoutUser());
   }
 
-  if (!data) {
-    return(
-      <p>Wait</p>
-    )
-  }
+  
 
   return (
     <div className={styles.profile}>

@@ -21,6 +21,7 @@ import { useLocation, useHistory } from "react-router";
 import { NotFound404 } from "../../pages/not-found404";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
+import { Preloader } from "../preloader/preloader";
 
 interface ILocationState {
   from: string,
@@ -41,24 +42,24 @@ const App: FC = () => {
 
   const { ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredientsReducer);
   const { data: userData } = useSelector(state => state.userReducer);
+  const { orderRequest } = useSelector(state => state.orderReducer)
   
   React.useEffect(() => {
     dispatch(checkUserAuthorization());
     dispatch(getIngredients());
   }, [dispatch])
 
-  
-  // const background = location.state?.background || undefined;
-  const background =
-  history.action === 'PUSH' && location.state && location.state.background;
+  const background = history.action === 'PUSH' && location.state && location.state.background;
 
-  console.log(background)
+  const closeModal: (() => void) = () => {
+    history.goBack();
+  }
 
   return (
     <>
       <AppHeader />
       <Switch location={background || location}>
-        <ProtectedRoute path="/login" redirectPath="/" userData={userData} needUserAuth={false}>
+        <ProtectedRoute path="/login" redirectPath="/qwe" userData={userData} needUserAuth={false}>
           <LoginPage />
         </ProtectedRoute>
         <ProtectedRoute path="/register" redirectPath="/" userData={userData} needUserAuth={false}>
@@ -88,7 +89,7 @@ const App: FC = () => {
             <>
               <DndProvider backend={HTML5Backend}>
                 <BurgerIngredients />
-                <BurgerConstructor />
+                { orderRequest ? <Preloader /> : <BurgerConstructor />}
               </DndProvider>
             </> : null }
         </div>
@@ -99,7 +100,7 @@ const App: FC = () => {
       </Switch>
       {background && 
         <Route path="/ingredients/:id" exact>
-          <Modal typeModal="ingredientDetails" header="Детали ингредиента">
+          <Modal typeModal="ingredientDetails" header="Детали ингредиента" closeModal={closeModal}>
             <IngredientDetails />
           </Modal>
         </Route> }

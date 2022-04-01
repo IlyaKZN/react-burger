@@ -12,6 +12,7 @@ import {
   DELETE_SELECTED_ITEM,
   DELETE_OLD_BUN,
   REORDER_INGREDIENTS,
+  DELETE_ALL_VIEWED_INGREDIENTS
 } from "../actions/index";
 
 import type {
@@ -111,6 +112,11 @@ export const dndReducer = (
     case REORDER_INGREDIENTS: {
       return {
         selectedIngredients: action.newCards,
+      };
+    }
+    case DELETE_ALL_VIEWED_INGREDIENTS: {
+      return {
+        selectedIngredients: [],
       };
     }
     default: {

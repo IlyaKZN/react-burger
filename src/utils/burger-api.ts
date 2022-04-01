@@ -19,10 +19,4 @@ export const getOrderNumber = (idList: string[]) => {
     })
   })
     .then(checkResponse)
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
-      );
-    });
 }

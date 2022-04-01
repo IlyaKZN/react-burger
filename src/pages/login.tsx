@@ -7,6 +7,7 @@ import { login } from "../services/actions/authorization";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router";
 import { useSelector } from "../services/types/hooks";
+import { Redirect } from "react-router";
 
 interface ILoginPage {
   email: string;
@@ -26,6 +27,7 @@ export const LoginPage: FC = () => {
   const location = useLocation<LocationState>();
   const state:{from: string} = location.state;
   const userState = useSelector(state => state.userReducer);
+  const { data: userData } = useSelector(state => state.userReducer);
 
   useEffect(() => {
 
@@ -33,14 +35,20 @@ export const LoginPage: FC = () => {
 
     return () => {
       console.log(userState)
-      // if(getUserSuccess) {
-      //   console.log(state.from)
-      //   history.replace(state.from)
+
       }
       
     
   }, [])
   
+  if (userData) {
+    return (
+      <Redirect
+                // Если объект state не является undefined, вернём пользователя назад.
+        to={ state?.from || '/' }
+      />
+    );
+  }
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({...value, email: e.target.value})

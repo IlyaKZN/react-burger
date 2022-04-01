@@ -33,8 +33,6 @@ const BurgerIngredients: FC = () => {
   const ingredientsSection2 = useRef<HTMLInputElement>(null);
   const ingredientsSection3 = useRef<HTMLInputElement>(null);
 
-  const location = useLocation();
-
   React.useEffect(() => {
     ingredients.forEach((el) => {
       if (el.type === "bun") {

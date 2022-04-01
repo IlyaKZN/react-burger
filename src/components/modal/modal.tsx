@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, MouseEventHandler } from "react";
 import ReactDOM from "react-dom";
 import ModalHeader from "../modal-header/modal-header";
 import modalStyles from "./modal.module.css";
@@ -11,12 +11,10 @@ const modalRoot = document.getElementById("react-modals");
 interface IModalProps {
   typeModal: string;
   header?: string;
+  closeModal: (() => void)
 }
 
-const Modal: FC<IModalProps> = ({ typeModal, header = "", children }) => {
-
-  const dispatch = useDispatch();
-  const history = useHistory();
+const Modal: FC<IModalProps> = ({ typeModal, header = "", children, closeModal }) => {
 
   React.useEffect(() => {
     document.addEventListener("keydown", checkButton);
@@ -28,34 +26,17 @@ const Modal: FC<IModalProps> = ({ typeModal, header = "", children }) => {
 
   const checkButton = (evt: KeyboardEvent) => {
     if (evt.key === "Escape") {
-      checkModalType();
-    }
-  };
-
-  const checkModalType = () => {
-    switch (typeModal) {
-      case "ingredientDetails":
-        {
-          history.goBack();
-        }
-        break;
-      case "orderNumber":
-        {
-          dispatch({
-            type: DELETE_ORDER_DATA,
-          });
-        }
-        break;
+      closeModal();
     }
   };
 
   return ReactDOM.createPortal(
     <>
       <div className={`${modalStyles.modal} pt-10 pr-10 pb-15 pl-10`}>
-        <ModalHeader onClose={checkModalType}>{header}</ModalHeader>
+        <ModalHeader onClose={closeModal}>{header}</ModalHeader>
         {children}
       </div>
-      <ModalOverlay onClose={checkModalType} />
+      <ModalOverlay onClose={closeModal} />
     </>,
     modalRoot as Element
   );

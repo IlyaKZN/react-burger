@@ -1,7 +1,7 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import ingredienStyles from "./ingredient-details.module.css";
 import { useSelector } from "../../services/types/hooks";
-import { useRouteMatch, useParams } from "react-router";
+import { useParams } from "react-router";
 
 const IngredientDetails: FC = () => {
 
@@ -9,20 +9,6 @@ const IngredientDetails: FC = () => {
   const { ingredients } = useSelector(state => state.ingredientsReducer)
 
   const params: {id: string} = useParams();
-  let { url } = useRouteMatch();
-
-  useEffect(() => {
-    if (url.indexOf('ingredients') !== -1) {
-      return
-    }
-    window.history.pushState(null, '', 
-      url !== "/"
-      ? `${url}/ingredients/${viewedIngredient?._id}`
-      : `ingredients/${viewedIngredient?._id}` );
-    return () => {
-      window.history.pushState(null, '', `${url}` );
-    }
-  }, [])
 
   if (!viewedIngredient) {
     ingredients.forEach((ingredient) => {

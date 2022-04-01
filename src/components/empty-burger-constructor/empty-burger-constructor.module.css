@@ -8,3 +8,7 @@
 .text {
   font-size: 24px;
 }
+
+.bun:last-of-type {
+  transform: rotate(180deg);
+}

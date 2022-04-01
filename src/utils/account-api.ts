@@ -20,12 +20,6 @@ export const registerApi = (userData: { email: string, password: string, name: s
       setCookie('refreshToken', res.refreshToken);
       return res
     })
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "При регистрации произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
-      );
-    });
 }
 
 export const loginApi = (userData: { email: string, password: string }) => {
@@ -45,12 +39,6 @@ export const loginApi = (userData: { email: string, password: string }) => {
       setCookie('refreshToken', res.refreshToken);
       return res
     })
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "При регистрации произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
-      );
-    });
 }
 
 export const requestPasswordChangeApi = (email: string) => {
@@ -64,12 +52,6 @@ export const requestPasswordChangeApi = (email: string) => {
     })
   })
     .then(checkResponse)
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "Произошла ошибка"
-      );
-    });
 }
 
 export const resetPasswordApi = (password: string, code: string) => {
@@ -84,12 +66,6 @@ export const resetPasswordApi = (password: string, code: string) => {
     })
   })
     .then(checkResponse)
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "Произошла ошибка"
-      );
-    });
 }
 
 export const changeUserDataApi = (name: string, email: string, password: string) => {
@@ -122,7 +98,6 @@ export const changeUserDataApi = (name: string, email: string, password: string)
             })
           })
         });
-      console.log(err);
       return Promise.reject(`Ошибка: `);
     });
 }
@@ -138,7 +113,6 @@ export const getUserApi = () => {
     .then(checkResponse)
     .catch((err) => {
       updateTokenApi();
-      console.log(err);
     });
 }
 
@@ -153,12 +127,6 @@ export const logoutUserApi = () => {
     })
   })
     .then(checkResponse)
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "Произошла ошибка"
-      );
-    });
 }
 
 export const updateTokenApi = () => {
@@ -176,10 +144,4 @@ export const updateTokenApi = () => {
       setCookie('accessToken', res.accessToken.split('Bearer ')[1], { expires: 1200 });
       setCookie('refreshToken', res.refreshToken);
     })
-    .catch((err) => {
-      console.log(err);
-      alert(
-        "Произошла ошибка при обновлении токена"
-      );
-    });
 }

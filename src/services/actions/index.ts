@@ -13,6 +13,7 @@ export const GET_ORDER_FAILED: "GET_ORDER_FAILED" = "GET_ORDER_FAILED";
 
 export const ADD_VIEWED_INGREDIENT: "ADD_VIEWED_INGREDIENT" = "ADD_VIEWED_INGREDIENT";
 export const DELETE_VIEWED_INGREDIENT: "DELETE_VIEWED_INGREDIENT" = "DELETE_VIEWED_INGREDIENT";
+export const DELETE_ALL_VIEWED_INGREDIENTS: " DELETE_ALL_VIEWED_INGREDIENTS" = " DELETE_ALL_VIEWED_INGREDIENTS";
 
 export const DELETE_ORDER_DATA: "DELETE_ORDER_DATA" = "DELETE_ORDER_DATA";
 
@@ -67,6 +68,10 @@ export interface IDeleteOrderDataAction {
   readonly type: typeof DELETE_ORDER_DATA;
 }
 
+export interface IDeleteAllViewedIngredients {
+  readonly type: typeof DELETE_ALL_VIEWED_INGREDIENTS
+}
+
 //Dnd
 export interface IAddSelectedItemAction {
   readonly type: typeof ADD_SELECTED_ITEM;
@@ -97,7 +102,8 @@ export type TDndActions =
   | IAddSelectedItemAction
   | IDeleteOldBunAction
   | IDeleteSelectedItemAction
-  | IReorderIngredientsAction;
+  | IReorderIngredientsAction
+  | IDeleteAllViewedIngredients
 
 export type TOrderActions =
   | IDeleteOrderDataAction
@@ -156,11 +162,18 @@ export const getOrder: AppThunk = (idList: string[]) => {
           type: GET_ORDER_SUCCESS,
           res,
         });
+        dispatch({
+          type: DELETE_ALL_VIEWED_INGREDIENTS
+        });
       })
       .catch((err) => {
         dispatch({
           type: GET_ORDER_FAILED,
         });
+        console.log(err);
+        alert(
+          "При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
+        );
       });
   };
 }

@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Route, Redirect } from "react-router";
 import { useSelector } from "../../services/types/hooks";
 import { useRouteMatch, useHistory, useLocation } from "react-router";
+import { state } from "../..";
 
 interface IProtectedRouteProps {
   path: string;
@@ -28,10 +29,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
 }) => {
   const { userData, redirectPath, needUserAuth, path } = rest;
   const { isAuthChecked } = useSelector(state => state.userReducer);
-  const history = useHistory();
-  const { url } = useRouteMatch();
   const location = useLocation<ILocationState>();
-  const locationState = location.state;
 
   if (!isAuthChecked) {
     return (
@@ -39,57 +37,30 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
     )
   }
 
-  
-
-  //login
-  if (userData && !needUserAuth) {
+  if (needUserAuth && !userData) {
     return (
-      <Redirect to={{
-        pathname: `${locationState ? locationState.from : '/'}`,
-        state: { from: path }
+      <Route {...rest} render={({ location }) => {
+          return <Redirect to={{
+              pathname: redirectPath,
+              state: { from: location }
+          }} />
       }} />
     )
   }
 
-  if (!userData && !needUserAuth) {
-    return (
-      <Route
-        {...rest}
-        render={() =>
-          children
-        }
-        exact
-      />
-    );
-  }
+  if (!needUserAuth && userData) {
+    const { from } = location.state || { from: { pathname: '/' } }
 
-
-  //profile
-  if (!isAuthChecked && needUserAuth) {
     return (
-      <Redirect to={{
-        pathname: `${redirectPath}`,
-        state: { from: path }
+      <Route {...rest} render={() => {
+        return <Redirect to={from} />
       }} />
-    )
-  }
-
-  if (userData && needUserAuth ) {
-    return (
-      <Route
-        {...rest}
-        render={() =>
-          children
-        }
-        exact
-      />
     )
   }
 
   return (
-    <Redirect to={{
-      pathname: `${redirectPath}`,
-      state: { from: path }
-    }} />
-  );
-};
+    <Route {...rest}>
+      {children}
+    </Route>
+  ) 
+}

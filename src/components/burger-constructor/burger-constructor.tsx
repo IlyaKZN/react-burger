@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerConstructorStyles from "./burger-constructor.module.css";
+import styles from "./burger-constructor.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
@@ -14,14 +14,16 @@ import {
   DELETE_OLD_BUN,
   DELETE_SELECTED_ITEM,
   REORDER_INGREDIENTS,
+  DELETE_ORDER_DATA
 } from "../../services/actions";
 import { useMemo } from "react";
 import { getOrder } from "../../services/actions";
 import { TUniqueIngredientData, TIngredientData } from "../../services/types";
-import { useHistory, useLocation, useRouteMatch } from "react-router";
-
+import { useHistory, useRouteMatch } from "react-router";
 import SelectedIngredientCard from "../selected-ingredient-card/selected-ingredient-card";
-import { Redirect } from "react-router";
+import emptyBunImg from '../../images/empty-bun.svg';
+import emptyFillingImg from '../../images/empty-filling.svg';
+import { stat } from "fs";
 
 interface IBurgerConstructor {
   selectedItems: {
@@ -49,7 +51,6 @@ const BurgerConstructor: FC = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
   const { url } = useRouteMatch();
 
   useMemo(() => {
@@ -147,75 +148,90 @@ const BurgerConstructor: FC = () => {
     dispatch(getOrder(idList));
   };
 
+  const closeModal = () => {
+    setState({ ...state, selectedItems: [], bun: undefined })
+    dispatch({
+      type: DELETE_ORDER_DATA,
+    });
+  }
+
   const modal = (
     <>
-      <Modal typeModal="orderNumber">
+      <Modal typeModal="orderNumber" closeModal={closeModal}>
         <OrderDetails />
       </Modal>
     </>
   );
+  
+  const emptyFillingContainerClassname = state.selectedItems.length ? styles.fullContainer : styles.emptyContainer
 
   return (
     <>
-      {state.bun && state.selectedItems.length ? (
-        <>
-          <div
-            className={`${burgerConstructorStyles.burgerConstructor}`}
-            ref={dropTarget}
-          >
-            <ul className={`${burgerConstructorStyles.elementsList}`}>
-              <li className={`${burgerConstructorStyles.element} mr-4`}>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${state.bun.data.name} (верх)`}
-                  price={state.bun.data.price}
-                  thumbnail={state.bun.data.image}
-                />
-              </li>
-              <div
-                className={`${burgerConstructorStyles.elementsList} ${burgerConstructorStyles.container}`}
-              >
-                {state.selectedItems.map((el, index) => (
-                  <SelectedIngredientCard
-                    el={el}
-                    deleteIngredient={deleteIngredient}
-                    key={el.id}
-                    id={el.id}
-                    index={index}
-                    moveCard={moveCard}
-                  />
-                ))}
-              </div>
-              <li className={`${burgerConstructorStyles.element} mr-4 mb-10`}>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${state.bun.data.name} (низ)`}
-                  price={state.bun.data.price}
-                  thumbnail={state.bun.data.image}
-                />
-              </li>
-            </ul>
-            <div className={`${burgerConstructorStyles.confirmContainer} mr-4`}>
-              <div
-                className={`${burgerConstructorStyles.priceContainer} mr-10`}
-              >
-                <p className="text text_type_digits-medium">
-                  {state.totalPrice}
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-              <Button onClick={createOrder} type="primary" size="large">
-                Оформить заказ
-              </Button>
+      <div
+        className={`${styles.burgerConstructor}`}
+        ref={dropTarget}
+      >
+        <ul className={`${styles.elementsList}`}>
+          { state.bun ? 
+            <li className={`${styles.element} mr-4`}>
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${state.bun.data.name} (верх)`}
+                price={state.bun.data.price}
+                thumbnail={state.bun.data.image}
+              />
+            </li> :
+            <div className={styles.emptyBun} style={{ backgroundImage: `url(${emptyBunImg})` }}>
+              <p className="text text_type_main-large mt-4">Добавьте булку</p>
             </div>
+          }
+          <div className={`${styles.elementsList} ${styles.container} ${emptyFillingContainerClassname}`} >
+            { state.selectedItems.length ? state.selectedItems.map((el, index) => (
+              <SelectedIngredientCard
+                el={el}
+                deleteIngredient={deleteIngredient}
+                key={el.id}
+                id={el.id}
+                index={index}
+                moveCard={moveCard}
+              />)) :
+              <div className={styles.emptyFilling} style={{ backgroundImage: `url(${emptyFillingImg})` }}>
+              <p className={`text text_type_main-large`}>Добавьте начинку</p>
+            </div>
+            }
           </div>
-          {orderNumber && modal}
-        </>
-      ) : (
-        <EmptyBurgerConstructor propRef={dropTarget} />
-      )}
+          { state.bun ? 
+            <li className={`${styles.element} mr-4 mb-10`}>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${state.bun.data.name} (низ)`}
+              price={state.bun.data.price}
+              thumbnail={state.bun.data.image}
+            />
+            </li> :
+            <div className={styles.emptyBun} style={{ backgroundImage: `url(${emptyBunImg})` }}>
+              <p className={`text text_type_main-large mt-4 ${styles.emptyBunTextBottom}`}>Добавьте булку</p>
+            </div>
+          }
+          
+        </ul>
+        <div className={`${styles.confirmContainer} mr-4`}>
+          <div
+            className={`${styles.priceContainer} mr-10`}
+          >
+            <p className="text text_type_digits-medium">
+              {state.totalPrice}
+            </p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <Button onClick={createOrder} type="primary" disabled={state.selectedItems.length && state.bun ? false : true} size="large">
+            Оформить заказ
+          </Button>
+        </div>
+      </div>
+      {orderNumber && modal}
     </>
   );
 };

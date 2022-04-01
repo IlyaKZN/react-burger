@@ -223,6 +223,9 @@ export const register = (userData: {
       })
       .catch((err) => {
         console.log(err);
+        alert(
+          "При регистрации произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
+        );
         dispatch({
           type: REGISTER_FAILED,
           payload: err,
@@ -245,6 +248,9 @@ export const login = (userData: { email: string; password: string }) => {
       })
       .catch((err) => {
         console.log(err);
+        alert(
+          "При регистрации произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
+        );
         dispatch({
           type: LOGIN_FAILED,
           payload: err,
@@ -268,6 +274,10 @@ export const requestPasswordChange: AppThunk = (email: string) => {
         dispatch({
           type: REQUEST_PASSWORD_CHANGE_FAILED,
         });
+        console.log(err);
+        alert(
+          "Произошла ошибка"
+        );
       });
   };
 };
@@ -287,6 +297,10 @@ export const resetPassword: AppThunk = (password: string, code: string) => {
         dispatch({
           type: RESET_PASSWORD_FAILED,
         });
+        console.log(err);
+        alert(
+          "Произошла ошибка"
+        );
       });
   };
 };
@@ -302,18 +316,16 @@ export const changeUserData: AppThunk = (
     });
     changeUserDataApi(name, email, password)
       .then((res) => {
-        console.log('Блок then')
         dispatch({
           type: CHANGE_USER_DATA_SUCCESS,
           payload: res,
         });
       })
       .catch((err) => {
-        console.log('Блок catch')
-        // dispatch(changeUserData(name, email, password))
         dispatch({
           type: CHANGE_USER_DATA_FAILED,
         });
+        console.log(err);
       });
   };
 };
@@ -331,6 +343,7 @@ export const getUser: AppThunk = () => {
         });
       })
       .catch((err) => {
+        console.log(err);
         dispatch({
           type: GET_USER_FAILED,
         });
@@ -347,6 +360,12 @@ export const checkUserAuthorization = () => (dispatch: any) => {
   } else if (getCookie("refreshToken")) {
     dispatch({ type: AUTHORIZATION_CHECKED_STARTED })
     updateTokenApi()
+      .catch((err) => {
+        console.log(err);
+        alert(
+          "Произошла ошибка при обновлении токена"
+        );
+      })
       .finally(() => {
         dispatch(getUser());
       })
@@ -366,6 +385,7 @@ export const logoutUser = () => {
         
       })
       .catch((err) => {
+        console.log(err);
         alert('Попытка выхода из аккаунта не удалась')
       });
   };

@@ -2,6 +2,7 @@ import React from "react";
 import headerStyles from './app-header.module.css';
 import ButtonHeader from "../button-header/button-header";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link } from "react-router-dom";
 
 function AppHeader() {
   return (
@@ -20,9 +21,9 @@ function AppHeader() {
             </li>
           </ul>
         </nav>
-        <div className={headerStyles.logo}>
+        <Link className={headerStyles.logo} to='/'>
           <Logo />
-        </div>
+        </Link>
       </div>
     </header>
   )
