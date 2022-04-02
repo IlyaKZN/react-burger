@@ -1,0 +1,50 @@
+.wrapper {
+  height: 430px;
+  width: 480px;
+  margin: 180px auto 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.form .input__container {
+  width: 100%;
+}
+
+.form input {
+  width: 100%;
+}
+
+.form div div div {
+  display: flex;
+  justify-content: end;
+}
+
+.form > div {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.form > div > div {
+  width: 100%;
+}
+
+.form > button {
+  width: fit-content;
+  margin-bottom: 80px;
+}
+
+.linkContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  color: #4C4CFF;
+  text-decoration: none;
+}

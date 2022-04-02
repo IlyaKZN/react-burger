@@ -30,6 +30,14 @@
   overflow-y: scroll;
 }
 
+.emptyContainer {
+  overflow-y: hidden;
+}
+
+.fullContainer {
+  overflow-y: scroll;
+}
+
 .container::-webkit-scrollbar {
   width: 8px;
   background-color: rgb(47, 47, 55);
@@ -49,4 +57,31 @@
 .confirmContainer {
   display: flex;
   justify-content: end;
+}
+
+.emptyBun:last-of-type {
+  transform: rotate(180deg);
+  margin-bottom: 40px;
+}
+
+.emptyFilling {
+  height: 120px;
+  width: 100%;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyBun {
+  height: 140px;
+  width: 100%;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyBunTextBottom:last-of-type {
+  transform: rotate(180deg);
 }

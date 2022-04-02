@@ -1,32 +1,28 @@
-import { getIngredientsData } from "../../utils/burger-api.js";
-import { getOrderNumber } from "../../utils/burger-api.js";
+import { getIngredientsData, getOrderNumber } from "../../utils/burger-api";
+import { requestPasswordChangeApi } from "../../utils/account-api";
 import { AppThunk, AppDispatch } from "../types/index.js";
-import { TUniqueIngredientData, TIngredientData } from "../types/index.js";
+import { TIngredientData } from "../types/index.js";
 
-export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" =
-  "GET_INGREDIENTS_REQUEST";
-export const GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS" =
-  "GET_INGREDIENTS_SUCCESS";
-export const GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED" =
-  "GET_INGREDIENTS_FAILED";
+export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" = "GET_INGREDIENTS_REQUEST";
+export const GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS" = "GET_INGREDIENTS_SUCCESS";
+export const GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED" = "GET_INGREDIENTS_FAILED";
 
 export const GET_ORDER_REQUEST: "GET_ORDER_REQUEST" = "GET_ORDER_REQUEST";
 export const GET_ORDER_SUCCESS: "GET_ORDER_SUCCESS" = "GET_ORDER_SUCCESS";
 export const GET_ORDER_FAILED: "GET_ORDER_FAILED" = "GET_ORDER_FAILED";
 
-export const ADD_VIEWED_INGREDIENT: "ADD_VIEWED_INGREDIENT" =
-  "ADD_VIEWED_INGREDIENT";
-export const DELETE_VIEWED_INGREDIENT: "DELETE_VIEWED_INGREDIENT" =
-  "DELETE_VIEWED_INGREDIENT";
+export const ADD_VIEWED_INGREDIENT: "ADD_VIEWED_INGREDIENT" = "ADD_VIEWED_INGREDIENT";
+export const DELETE_VIEWED_INGREDIENT: "DELETE_VIEWED_INGREDIENT" = "DELETE_VIEWED_INGREDIENT";
+export const DELETE_ALL_VIEWED_INGREDIENTS: " DELETE_ALL_VIEWED_INGREDIENTS" = " DELETE_ALL_VIEWED_INGREDIENTS";
 
 export const DELETE_ORDER_DATA: "DELETE_ORDER_DATA" = "DELETE_ORDER_DATA";
 
 export const ADD_SELECTED_ITEM: "ADD_SELECTED_ITEM" = "ADD_SELECTED_ITEM";
-export const DELETE_SELECTED_ITEM: "DELETE_SELECTED_ITEM" =
-  "DELETE_SELECTED_ITEM";
+export const DELETE_SELECTED_ITEM: "DELETE_SELECTED_ITEM" = "DELETE_SELECTED_ITEM";
 export const DELETE_OLD_BUN: "DELETE_OLD_BUN" = "DELETE_OLD_BUN";
 
 export const REORDER_INGREDIENTS: "REORDER_INGREDIENTS" = "REORDER_INGREDIENTS";
+
 
 
 
@@ -72,6 +68,10 @@ export interface IDeleteOrderDataAction {
   readonly type: typeof DELETE_ORDER_DATA;
 }
 
+export interface IDeleteAllViewedIngredients {
+  readonly type: typeof DELETE_ALL_VIEWED_INGREDIENTS
+}
+
 //Dnd
 export interface IAddSelectedItemAction {
   readonly type: typeof ADD_SELECTED_ITEM;
@@ -95,11 +95,15 @@ export interface IReorderIngredientsAction {
   readonly newCards: { data: TIngredientData; id: string }[];
 }
 
+
+
+
 export type TDndActions =
   | IAddSelectedItemAction
   | IDeleteOldBunAction
   | IDeleteSelectedItemAction
-  | IReorderIngredientsAction;
+  | IReorderIngredientsAction
+  | IDeleteAllViewedIngredients
 
 export type TOrderActions =
   | IDeleteOrderDataAction
@@ -116,11 +120,15 @@ export type TIngredientsActions =
   | IGetIngredientsRequestAction
   | IGetIngredientsFailedAction;
 
+
+
 export type TAppActions = 
   | TDndActions
   | TOrderActions
   | TViewedIngredientActions
   | TIngredientsActions;
+
+
 
 export const getIngredients: AppThunk = () => {
   return function (dispatch: AppDispatch) {
@@ -154,11 +162,19 @@ export const getOrder: AppThunk = (idList: string[]) => {
           type: GET_ORDER_SUCCESS,
           res,
         });
+        dispatch({
+          type: DELETE_ALL_VIEWED_INGREDIENTS
+        });
       })
       .catch((err) => {
         dispatch({
           type: GET_ORDER_FAILED,
         });
+        console.log(err);
+        alert(
+          "При создании заказа произошла ошибка, попробуйте ещё раз или обратитесь в поддержку"
+        );
       });
   };
 }
+

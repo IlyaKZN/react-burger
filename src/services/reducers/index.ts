@@ -12,6 +12,7 @@ import {
   DELETE_SELECTED_ITEM,
   DELETE_OLD_BUN,
   REORDER_INGREDIENTS,
+  DELETE_ALL_VIEWED_INGREDIENTS
 } from "../actions/index";
 
 import type {
@@ -63,18 +64,32 @@ const initialStateViewedIngredient: TInitialStateViewedIngredient = {
   viewedIngredient: null,
 };
 
+type TInitialStateRequestChangePassword = {
+  requestActive: boolean;
+  requestSucces: boolean;
+  requestFailed: boolean;
+};
+
+const initialStateRequestChangePassword: TInitialStateRequestChangePassword = {
+  requestActive: false,
+  requestSucces: false,
+  requestFailed: false,
+};
+
 export const dndReducer = (
   state = initialStateDnd,
   action: TDndActions
 ): TInitialStateDnd => {
   switch (action.type) {
     case ADD_SELECTED_ITEM: {
-      console.log(action.payload)
       return {
         ...state,
         selectedIngredients: [
           ...state.selectedIngredients,
-          { data: action.payload.ingredient.el, id: action.payload.ingredient.id },
+          {
+            data: action.payload.ingredient.el,
+            id: action.payload.ingredient.id,
+          },
         ],
       };
     }
@@ -97,6 +112,11 @@ export const dndReducer = (
     case REORDER_INGREDIENTS: {
       return {
         selectedIngredients: action.newCards,
+      };
+    }
+    case DELETE_ALL_VIEWED_INGREDIENTS: {
+      return {
+        selectedIngredients: [],
       };
     }
     default: {
@@ -196,3 +216,5 @@ export const ingredientsReducer = (
     }
   }
 };
+
+

@@ -3,7 +3,7 @@ import modalHeaderStyles from "./modal-header.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 interface IModalHeaderProps {
-  onClose: (() => void) | undefined;
+  onClose: (() => void);
 }
 
 const ModalHeader: FC<IModalHeaderProps> = ({ onClose, children }) => {

@@ -19,3 +19,8 @@
   grid-template-columns: min-content min-content;
   column-gap: 9px;
 }
+
+.link {
+  color: white;
+  text-decoration: none;
+}

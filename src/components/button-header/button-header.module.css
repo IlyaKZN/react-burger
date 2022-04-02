@@ -1,4 +1,4 @@
-.button {
+.link {
   padding: 0;
   background-color: rgba(1, 1, 1, 0);
   border: none;
@@ -6,13 +6,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-decoration: none;
+}
+
+.link > svg {
+  margin: 0 8px 0 0;
 }
 
 .text {
   color: rgba(133, 133, 173, 1);
-  margin: 0 0 0 8px;
 }
 
-.active {
+.activeLink {
   color: white;
 }

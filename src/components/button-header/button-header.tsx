@@ -1,46 +1,56 @@
-import React, { FC } from "react";
+import React, { useEffect, useRef, FunctionComponent } from "react";
 import HeaderButtonStyles from "./button-header.module.css";
 import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, useLocation } from 'react-router-dom';
 
 interface IButtonHeaderProps {
   initial: 'secondary' | 'primary' | 'error' | 'success';
   name: string;
 }
 
-const ButtonHeader: FC<IButtonHeaderProps> = ({ name, initial, children }) => {
+interface IButtonHeader {
+  link: string;
+  icon: JSX.Element;
+}
 
-  const [state, setState] = React.useState({ type : initial })
+const ButtonHeader: FunctionComponent<IButtonHeaderProps> = ({ name, children }) => {
 
-  const setType = (): void => {
-    setState({type : state.type === 'primary' ? 'secondary' : 'primary'})
-  }
+  const path = useLocation().pathname
 
-  const getIcon = (name: string) => {
+  const [state, setState] = React.useState<IButtonHeader>({ link: '', icon: <></> })
+
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
     switch(name) {
       case "burger":
-        return (
-          <BurgerIcon type={state.type}/>
-        )
+        setState({ ...state, link: '/', icon: <BurgerIcon type={path === '/' ? 'primary' : 'secondary'} />});
+        break;
       case "list":
-        return (
-          <ListIcon type={state.type}/>
-        )
+        setState({ ...state, link: '/qwerty', icon: <ListIcon type={path === '/qwerty' ? 'primary' : 'secondary'}/> });
+        break;
       case "profile":
-        return (
-          <ProfileIcon type={state.type}/>
-        )
+        setState({ ...state, link: '/profile', icon: <ProfileIcon type={path === '/profile' ? 'primary' : 'secondary'}/> });
+        break;
     }
-  }
+  }, [path])
+  
 
   return (
-    <button className={HeaderButtonStyles.button} onClick={setType}>
-      {getIcon(name)} <p className={state.type === 'primary' ? `${HeaderButtonStyles.text} ${HeaderButtonStyles.active} ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`
-        : `${HeaderButtonStyles.text} ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`}>{children}</p>
-    </button>
+    <NavLink 
+      exact
+      to={state.link} 
+      ref={linkRef}
+      className={`${HeaderButtonStyles.text} ${HeaderButtonStyles.link} ${HeaderButtonStyles.textNormal}
+        text text_type_main-default ml-2`} 
+      activeClassName={`${HeaderButtonStyles.link} ${HeaderButtonStyles.activeLink} ${HeaderButtonStyles.text}
+        ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`} >
+      {state.icon}{children}
+    </NavLink> 
   )
 
 }
 
-export default ButtonHeader;
+export default (ButtonHeader);
