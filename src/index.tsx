@@ -9,6 +9,24 @@ import { rootReducer } from './services/reducers/root-reducer';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { socketMiddleware } from './services/middleware/socketMiddlware';
+import {
+  WS_CONNECTION_SUCCESS,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+  WS_GET_MESSAGE,
+  WS_SEND_MESSAGE
+} from './services/action-types/wsActionTypes';
+
+const wsActions = {
+  wsInit: WS_CONNECTION_START,
+  wsSendMessage: WS_SEND_MESSAGE,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+  onMessage: WS_GET_MESSAGE
+};
 
 declare global {
     interface Window {
@@ -18,7 +36,7 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsActions)));
 
 export const state = createStore(rootReducer, enhancer);
 

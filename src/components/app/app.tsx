@@ -22,6 +22,7 @@ import { NotFound404 } from "../../pages/not-found404";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { Preloader } from "../preloader/preloader";
+import { Feed } from "../../pages/feed";
 
 interface ILocationState {
   from: string,
@@ -77,8 +78,11 @@ const App: FC = () => {
         <ProtectedRoute path="/profile" redirectPath="/login" userData={userData} needUserAuth={true}>
           <ProfilePage />
         </ProtectedRoute>
-        <Route path="/ingredients/:id">
+        <Route path="/ingredients/:id" exact>
           <IngredientPage />
+        </Route>
+        <Route path="/feed" exact>
+          <Feed />
         </Route>
         <Route path="/" exact={true}>
         <div className={AppStyles.content}>

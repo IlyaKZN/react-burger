@@ -20,6 +20,23 @@ export type TIngredientData = {
   _id: string;
 };
 
+export type TOrderData = {
+  "ingredients": string[],
+  "_id": string,
+  "status": string,
+  "number": number,
+  "name": string,
+  "createdAt": string,
+  "updatedAt": string
+}
+
+export type TOrdersData = {
+"success": boolean,
+"orders": TOrderData[],
+"total": number,
+"totalToday": number
+}
+
 export type TUniqueIngredientData = {
   item: { el: TIngredientData; id: string };
 };
