@@ -1,40 +1,40 @@
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
-  WS_SEND_MESSAGE,
+  ORDERS_CONNECTION_START,
+  ORDERS_CONNECTION_SUCCESS,
+  ORDERS_CONNECTION_ERROR,
+  ORDERS_CONNECTION_CLOSED,
+  ORDERS_GET_MESSAGE,
+  ORDERS_SEND_MESSAGE,
 } from '../action-types/wsActionTypes';
 
-export const wsConnectionSuccess = () => {
+export const ordersConnectionSuccess = () => {
   return {
-    type: WS_CONNECTION_SUCCESS
+    type: ORDERS_CONNECTION_SUCCESS
   };
 };
 
-export const wsConnectionError = () => {
+export const ordersConnectionError = () => {
   return {
-    type: WS_CONNECTION_ERROR
+    type: ORDERS_CONNECTION_ERROR
   };
 };
 
-export const wsConnectionClosed = () => {
+export const ordersConnectionClosed = () => {
   return {
-    type: WS_CONNECTION_CLOSED
+    type: ORDERS_CONNECTION_CLOSED
   };
 };
 
-export const wsGetMessage = (message: any) => {
+export const ordersGetMessage = (message: any) => {
   return {
-    type: WS_GET_MESSAGE,
+    type: ORDERS_GET_MESSAGE,
     payload: message
   };
 };
 
-export const wsSendMessage = (message: any) => {
+export const ordersSendMessage = (message: any) => {
   return {
-    type: WS_SEND_MESSAGE,
+    type: ORDERS_SEND_MESSAGE,
     payload: message
   };
 };

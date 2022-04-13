@@ -11,21 +11,36 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { socketMiddleware } from './services/middleware/socketMiddlware';
 import {
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_START,
-  WS_GET_MESSAGE,
-  WS_SEND_MESSAGE
+  ORDERS_CONNECTION_SUCCESS,
+  ORDERS_CONNECTION_ERROR,
+  ORDERS_CONNECTION_CLOSED,
+  ORDERS_CONNECTION_START,
+  ORDERS_GET_MESSAGE,
+  ORDERS_SEND_MESSAGE,
+  FEED_CONNECTION_CLOSED,
+  FEED_CONNECTION_ERROR,
+  FEED_CONNECTION_START,
+  FEED_CONNECTION_SUCCESS,
+  FEED_GET_MESSAGE,
+  FEED_SEND_MESSAGE
 } from './services/action-types/wsActionTypes';
 
-const wsActions = {
-  wsInit: WS_CONNECTION_START,
-  wsSendMessage: WS_SEND_MESSAGE,
-  onOpen: WS_CONNECTION_SUCCESS,
-  onClose: WS_CONNECTION_CLOSED,
-  onError: WS_CONNECTION_ERROR,
-  onMessage: WS_GET_MESSAGE
+const ordersActions = {
+  wsInit: ORDERS_CONNECTION_START,
+  wsSendMessage:ORDERS_SEND_MESSAGE,
+  onOpen: ORDERS_CONNECTION_SUCCESS,
+  onClose: ORDERS_CONNECTION_CLOSED,
+  onError: ORDERS_CONNECTION_ERROR,
+  onMessage: ORDERS_GET_MESSAGE
+};
+
+const feedActions = {
+  wsInit: FEED_CONNECTION_START,
+  wsSendMessage: FEED_SEND_MESSAGE,
+  onOpen: FEED_CONNECTION_SUCCESS,
+  onClose: FEED_CONNECTION_CLOSED,
+  onError: FEED_CONNECTION_ERROR,
+  onMessage: FEED_GET_MESSAGE
 };
 
 declare global {
@@ -36,7 +51,7 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsActions)));
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(ordersActions), socketMiddleware(feedActions)));
 
 export const state = createStore(rootReducer, enhancer);
 

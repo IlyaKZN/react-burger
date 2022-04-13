@@ -1,40 +1,85 @@
 import { TOrdersData } from "../types";
-export const WS_CONNECTION_START = 'WS_CONNECTION_START';
-export const WS_CONNECTION_SUCCESS = 'WS_CONNECTION_SUCCESS';
-export const WS_CONNECTION_ERROR = 'WS_CONNECTION_ERROR';
-export const WS_CONNECTION_CLOSED = 'WS_CONNECTION_CLOSED';
-export const WS_GET_MESSAGE = 'WS_GET_MESSAGE';
-export const WS_SEND_MESSAGE = 'WS_SEND_MESSAGE';
+export const ORDERS_CONNECTION_START = 'ORDERS_CONNECTION_START';
+export const ORDERS_CONNECTION_SUCCESS = 'ORDERS_CONNECTION_SUCCESS';
+export const ORDERS_CONNECTION_ERROR = 'ORDERS_CONNECTION_ERROR';
+export const ORDERS_CONNECTION_CLOSED = 'ORDERS_CONNECTION_CLOSED';
+export const ORDERS_GET_MESSAGE = 'ORDERS_GET_MESSAGE';
+export const ORDERS_SEND_MESSAGE = 'ORDERS_SEND_MESSAGE';
 
-export interface IWSConnectionStartAction {
-  readonly type: typeof WS_CONNECTION_START;
+export interface IOrdersConnectionStartAction {
+  readonly type: typeof ORDERS_CONNECTION_START;
 }
 
-export interface IWSConnectionSuccessAction {
-  readonly type: typeof WS_CONNECTION_SUCCESS;
+export interface IOrdersConnectionSuccessAction {
+  readonly type: typeof ORDERS_CONNECTION_SUCCESS;
 }
 
-export interface IWSConnectionErrorAction {
-  readonly type: typeof WS_CONNECTION_ERROR;
+export interface IOrdersConnectionErrorAction {
+  readonly type: typeof ORDERS_CONNECTION_ERROR;
 }
 
-export interface IWSConnectionClosedAction {
-  readonly type: typeof WS_CONNECTION_CLOSED;
+export interface IOrdersConnectionClosedAction {
+  readonly type: typeof ORDERS_CONNECTION_CLOSED;
 }
 
-export interface IWSGetMessageAction {
-  readonly type: typeof WS_GET_MESSAGE;
+export interface IOrdersGetMessageAction {
+  readonly type: typeof ORDERS_GET_MESSAGE;
   readonly payload: TOrdersData;
 }
 
-export interface IWSSendMessageAction {
-  readonly type: typeof WS_SEND_MESSAGE;
+export interface IOrdersSendMessageAction {
+  readonly type: typeof ORDERS_SEND_MESSAGE;
 }
 
-export type TWSActions =
-  | IWSConnectionClosedAction
-  | IWSConnectionErrorAction
-  | IWSConnectionStartAction
-  | IWSConnectionSuccessAction
-  | IWSGetMessageAction
-  | IWSSendMessageAction
+export type TOrdersActions =
+  | IOrdersConnectionClosedAction
+  | IOrdersConnectionErrorAction
+  | IOrdersConnectionStartAction
+  | IOrdersConnectionSuccessAction
+  | IOrdersGetMessageAction
+  | IOrdersSendMessageAction
+
+export const FEED_CONNECTION_START = 'FEED_CONNECTION_START';
+export const FEED_CONNECTION_SUCCESS = 'FEED_CONNECTION_SUCCESS';
+export const FEED_CONNECTION_ERROR = 'FEED_CONNECTION_ERROR';
+export const FEED_CONNECTION_CLOSED = 'FEED_CONNECTION_CLOSED';
+export const FEED_GET_MESSAGE = 'FEED_GET_MESSAGE';
+export const FEED_SEND_MESSAGE = 'FEED_SEND_MESSAGE';
+
+export interface IFeedConnectionStartAction {
+  readonly type: typeof FEED_CONNECTION_START;
+}
+
+export interface IFeedConnectionSuccessAction {
+  readonly type: typeof FEED_CONNECTION_SUCCESS;
+}
+
+export interface IFeedConnectionErrorAction {
+  readonly type: typeof FEED_CONNECTION_ERROR;
+}
+
+export interface IFeedConnectionClosedAction {
+  readonly type: typeof FEED_CONNECTION_CLOSED;
+}
+
+export interface IFeedGetMessageAction {
+  readonly type: typeof FEED_GET_MESSAGE;
+  readonly payload: TOrdersData;
+}
+
+export interface IFeedSendMessageAction {
+  readonly type: typeof ORDERS_SEND_MESSAGE;
+}
+
+export type TFeedSActions =
+  | IFeedConnectionClosedAction
+  | IFeedConnectionErrorAction
+  | IFeedConnectionStartAction
+  | IFeedConnectionSuccessAction
+  | IFeedGetMessageAction
+  | IFeedSendMessageAction
+
+export type TWSActions = 
+  | TFeedSActions
+  | TOrdersActions
+  

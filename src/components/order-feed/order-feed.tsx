@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 import { OrderImage } from "../orderImage/order-image";
 import { useSelector } from "../../services/types/hooks";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { TOrdersData, TOrderData } from "../../services/types";
 import { dateReformating } from "../../utils/date-reformating";
+import { useLocation } from "react-router";
 
 interface TOrderFeedProps {
   ordersData: TOrdersData;
+  type: 'orders' | 'feed';
 }
 
-export const OrderFeed: FC<TOrderFeedProps> = ({ ordersData }) => {
-  
+export const OrderFeed: FC<TOrderFeedProps> = ({ ordersData, type }) => {
+
   const { ingredients } = useSelector((state) => state.ingredientsReducer);
+  const location = useLocation();
 
   const createOrderCard = (el: TOrderData) => {
 
@@ -41,13 +44,25 @@ export const OrderFeed: FC<TOrderFeedProps> = ({ ordersData }) => {
 
     return (
       <li className={styles.order} key={el.number}>
-        <Link to="/feed" className={styles.link}>
+        <Link to={{
+          pathname: type === 'feed' ? `/feed/${el.number}` : `/profile/orders/${el.number}`,
+          state: { background: location },
+        }} 
+          className={styles.link}>
           <div className={`${styles.header} mb-6`}>
             <p className="text text_type_digits-default">{`#${el.number}`}</p>
             <p className="text text_type_main-default text_color_inactive">{dateReformating(el.createdAt)}</p>
           </div>
-          <p className="text text_type_main-medium mb-6">{el.name}</p>
-          <div className={styles.container}>
+          <p className="text text_type_main-medium">{el.name}</p>
+          {type === 'orders' && el.status === 'done'? 
+            <p className="text text_type_main-default mt-2" style={{'color': '#00CCCC'}}>Выполнен</p> :
+            null
+          }
+          {type === 'orders' && el.status === 'pending'? 
+            <p className="text text_type_main-default mt-2">Готовится</p> :
+            null
+          }
+          <div className={`${styles.container} mt-6`}>
             <div className={`${styles.imagesContainer} mr-6`}>
             {Object.keys(sortedOrderIngredients).map((item, index) => (
               <OrderImage
@@ -69,9 +84,20 @@ export const OrderFeed: FC<TOrderFeedProps> = ({ ordersData }) => {
     );
   };
 
+  const reversedArray = ordersData.orders.slice(0);
+  reversedArray.reverse();
+
   return (
-    <ul className={styles.orderList}>
-      {ordersData.orders.map((el, index) => createOrderCard(el))}
-    </ul>
+    <>
+      {type === 'orders' ? 
+        <ul className={styles.orderList}>
+          {reversedArray.map((el, index) => createOrderCard(el))}
+        </ul> : 
+        <ul className={styles.orderList}>
+          {ordersData.orders.map((el, index) => createOrderCard(el))}
+        </ul>
+      }
+    </>
+    
   );
 };

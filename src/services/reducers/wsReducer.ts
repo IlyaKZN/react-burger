@@ -1,53 +1,112 @@
 import {
-  WS_SEND_MESSAGE,
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
+  ORDERS_CONNECTION_START,
+  ORDERS_CONNECTION_SUCCESS,
+  ORDERS_CONNECTION_ERROR,
+  ORDERS_CONNECTION_CLOSED,
+  ORDERS_GET_MESSAGE,
+  ORDERS_SEND_MESSAGE,
+  FEED_CONNECTION_CLOSED,
+  FEED_CONNECTION_ERROR,
+  FEED_CONNECTION_START,
+  FEED_CONNECTION_SUCCESS,
+  FEED_GET_MESSAGE,
+  FEED_SEND_MESSAGE
 } from "../action-types/wsActionTypes";
-import { TWSActions } from "../action-types/wsActionTypes";
+import { TOrdersActions, TFeedSActions } from "../action-types/wsActionTypes";
 import { TOrdersData } from "../types";
 
-type TInitialState = {
+type TOrdersInitialState = {
   wsConnected: boolean;
-  allOrders: TOrdersData | null;
-  userOrders: TOrdersData | [];
+  userOrdersData: TOrdersData | null
 }
 
-const initialState: TInitialState = {
+const ordersInitialState: TOrdersInitialState = {
   wsConnected: false,
-  allOrders: null,
-  userOrders: []
+  userOrdersData: null
 };
 
-export const wsReducer = (state = initialState, action: TWSActions): TInitialState => {
+type TFeedInitialState = {
+  wsConnected: boolean;
+  feedOrdersData: TOrdersData | null
+}
+
+const feedInitialState: TFeedInitialState = {
+  wsConnected: false,
+  feedOrdersData: null
+};
+
+export type TWsStates = 
+  | TOrdersInitialState
+  | TFeedInitialState
+
+export const userOrdersReducer = (state = ordersInitialState, action: TOrdersActions): TOrdersInitialState => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case ORDERS_CONNECTION_SUCCESS:
       return {
         ...state,
         wsConnected: true
       };
 
-    case WS_CONNECTION_ERROR:
+    case ORDERS_CONNECTION_ERROR:
       return {
         ...state,
         wsConnected: false
       };
 
-    case WS_CONNECTION_CLOSED:
+    case ORDERS_CONNECTION_CLOSED:
       return {
         ...state,
-        wsConnected: false
+        wsConnected: false,
+        userOrdersData: null
       };
 
-    case WS_GET_MESSAGE:
+    case ORDERS_GET_MESSAGE:
       return {
         ...state,
-        allOrders: action.payload
+        userOrdersData: action.payload
       };
+    
 
     default:
       return state;
   }
 };
+
+export const feedOrdersReducer = (state = feedInitialState, action: TFeedSActions): TFeedInitialState => {
+  switch (action.type) {
+    case FEED_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        wsConnected: true
+      };
+
+    case FEED_CONNECTION_ERROR:
+      return {
+        ...state,
+        wsConnected: false
+      };
+
+    case FEED_CONNECTION_CLOSED:
+      return {
+        ...state,
+        wsConnected: false,
+        feedOrdersData: null
+      };
+
+    case FEED_GET_MESSAGE:
+      return {
+        ...state,
+        feedOrdersData: action.payload
+      };
+    
+
+    default:
+      return state;
+  }
+};
+
+
+
+
+
+

@@ -1,6 +1,12 @@
+import { TWsStates } from "../reducers/wsReducer";
+import { AnyAction, Middleware, MiddlewareAPI } from "redux";
+import { AppDispatch } from "../types";
+import { RootState } from "../types";
+import { Dispatch, FC } from "react";
 import { TWSActions } from "../action-types/wsActionTypes";
 
-type TwsActions  = {
+
+type TwsActions = {
   wsInit: string,
   onOpen: string,
   onClose: string,
@@ -9,11 +15,11 @@ type TwsActions  = {
   wsSendMessage: string
 }
 
-export const socketMiddleware = (wsActions: TwsActions) => {
-  return (store: any) => {
-    let socket: any = null;
+export const socketMiddleware = (wsActions: TwsActions): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
+    let socket: WebSocket | null = null;
 
-    return (next: any) => (action: any) => {
+    return (next: Dispatch<AnyAction>) => (action: AnyAction) => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
@@ -21,22 +27,22 @@ export const socketMiddleware = (wsActions: TwsActions) => {
         socket = new WebSocket(payload);
       }
       if (socket) {
-        socket.onopen = (event: any) => {
+        socket.onopen = (event: Event) => {
           dispatch({ type: onOpen, payload: event });
         };
 
-        socket.onerror = (event: any) => {
+        socket.onerror = (event: Event) => {
           dispatch({ type: onError, payload: event });
         };
 
-        socket.onmessage = (event: any) => {
+        socket.onmessage = (event: MessageEvent) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
 
           dispatch({ type: onMessage, payload: parsedData });
         };
 
-        socket.onclose = (event: any) => {
+        socket.onclose = (event: CloseEvent) => {
           dispatch({ type: onClose, payload: event });
         };
 
@@ -44,6 +50,10 @@ export const socketMiddleware = (wsActions: TwsActions) => {
           const message = {...payload, token: ``}
           
           socket.send(JSON.stringify(message))
+        }
+
+        if (type === onClose) {
+          socket.close();
         }
       }
 

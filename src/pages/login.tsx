@@ -28,23 +28,11 @@ export const LoginPage: FC = () => {
   const state:{from: string} = location.state;
   const userState = useSelector(state => state.userReducer);
   const { data: userData } = useSelector(state => state.userReducer);
-
-  useEffect(() => {
-
-    console.log(state)
-
-    return () => {
-      console.log(userState)
-
-      }
-      
-    
-  }, [])
   
   if (userData) {
     return (
       <Redirect
-                // Если объект state не является undefined, вернём пользователя назад.
+        // Если объект state не является undefined, вернём пользователя назад.
         to={ state?.from || '/' }
       />
     );

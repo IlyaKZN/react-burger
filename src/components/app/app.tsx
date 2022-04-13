@@ -17,12 +17,15 @@ import { ProtectedRoute } from "../protected-route/protected-route";
 import { checkUserAuthorization } from "../../services/actions/authorization";
 import { IngredientPage } from "../../pages/ingredient-page";
 import { OrdersPage } from "../../pages/orders";
-import { useLocation, useHistory } from "react-router";
+import { useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { NotFound404 } from "../../pages/not-found404";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { Preloader } from "../preloader/preloader";
 import { Feed } from "../../pages/feed";
+import { OrderInfo } from "../order-Info/order-info";
+import { OrderInfoPage } from "../../pages/order-info-page";
 
 interface ILocationState {
   from: string,
@@ -72,6 +75,9 @@ const App: FC = () => {
         <ProtectedRoute path="/reset-password" redirectPath="/" userData={userData} needUserAuth={false}>
           <ResetPasswordPage />
         </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders/:number" redirectPath="/" userData={userData} needUserAuth={true}>
+          <OrderInfoPage />
+        </ProtectedRoute>
         <ProtectedRoute path="/profile/orders" redirectPath="/login" userData={userData} needUserAuth={true}>
           <OrdersPage />
         </ProtectedRoute>
@@ -80,6 +86,9 @@ const App: FC = () => {
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact>
           <IngredientPage />
+        </Route>
+        <Route path="/feed/:number" exact>
+          <OrderInfoPage />
         </Route>
         <Route path="/feed" exact>
           <Feed />
@@ -102,12 +111,24 @@ const App: FC = () => {
           <NotFound404 />
         </Route>
       </Switch>
-      {background && 
+      {background &&
+        <>
         <Route path="/ingredients/:id" exact>
-          <Modal typeModal="ingredientDetails" header="Детали ингредиента" closeModal={closeModal}>
+          <Modal header="Детали ингредиента" closeModal={closeModal} headerType='text'>
             <IngredientDetails />
           </Modal>
-        </Route> }
+        </Route>
+        <Route path="/feed/:number" exact>
+          <Modal closeModal={closeModal} headerType='digits'>
+            <OrderInfo />
+          </Modal>
+        </Route>
+        <ProtectedRoute path="/profile/orders/:number" redirectPath="/login" userData={userData} needUserAuth={true}>
+          <Modal closeModal={closeModal} headerType='digits'>
+            <OrderInfo />
+          </Modal>
+        </ProtectedRoute>
+        </>}
     </>
   )
 }

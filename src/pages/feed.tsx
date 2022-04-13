@@ -1,30 +1,36 @@
 import styles from './feed.module.css';
 import { OrderFeed } from '../components/order-feed/order-feed';
-import { useSelector,useDispatch } from '../services/types/hooks';
-import { useEffect } from 'react';
-import { WS_CONNECTION_START } from '../services/action-types/wsActionTypes';
+import { useSelector, useDispatch } from '../services/types/hooks';
+import { FC, useEffect } from 'react';
+import { FEED_CONNECTION_START, FEED_CONNECTION_CLOSED } from '../services/action-types/wsActionTypes';
 import { OrdersData } from '../components/orders-data/orders-data';
 import { Preloader } from '../components/preloader/preloader';
 
-export const Feed = () => {
+
+export const Feed: FC = () => {
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START, payload: 'wss://norma.nomoreparties.space/orders/all' })
-  },[])
+    dispatch({ type: FEED_CONNECTION_START, payload: 'wss://norma.nomoreparties.space/orders/all' })
 
-  const { allOrders } = useSelector(state => state.wsReducer)
+    return () => {
+      dispatch({ type: FEED_CONNECTION_CLOSED })
+    }
+    
+  }, [])
+
+  const { feedOrdersData } = useSelector(state => state.feedOrdersReducer)
 
   return (
     <>
-    { allOrders ?
+    { feedOrdersData ?
         <section className={styles.page}>
           <h1 className="text text_type_main-large">Лента заказов</h1>
           <div className={styles.orderFeed}>
-            <OrderFeed ordersData={allOrders}/>
+            <OrderFeed ordersData={feedOrdersData} type='feed'/>
           </div>
-          <OrdersData ordersData={allOrders}/>
+          <OrdersData ordersData={feedOrdersData}/>
         </section>
       : <Preloader />
     }

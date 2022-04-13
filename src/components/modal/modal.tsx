@@ -1,20 +1,27 @@
 import React, { FC, MouseEventHandler } from "react";
 import ReactDOM from "react-dom";
-import ModalHeader from "../modal-header/modal-header";
 import modalStyles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { useDispatch } from "react-redux";
 import { DELETE_ORDER_DATA } from "../../services/actions";
 import { useHistory } from "react-router";
+import { useParams } from "react-router";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 const modalRoot = document.getElementById("react-modals");
 
 interface IModalProps {
-  typeModal: string;
   header?: string;
-  closeModal: (() => void)
+  closeModal: (() => void);
+  headerType: 'digits' | 'text';
 }
 
-const Modal: FC<IModalProps> = ({ typeModal, header = "", children, closeModal }) => {
+const Modal: FC<IModalProps> = ({ header, children, closeModal, headerType }) => {
+
+  const params: {number: string} = useParams();
+
+  if (header === undefined) {
+    header = `#${params.number}`;
+  }
 
   React.useEffect(() => {
     document.addEventListener("keydown", checkButton);
@@ -33,7 +40,14 @@ const Modal: FC<IModalProps> = ({ typeModal, header = "", children, closeModal }
   return ReactDOM.createPortal(
     <>
       <div className={`${modalStyles.modal} pt-10 pr-10 pb-15 pl-10`}>
-        <ModalHeader onClose={closeModal}>{header}</ModalHeader>
+        <div className={modalStyles.header}>
+          {headerType === 'text' ? <h3 className="text text_type_main-large">{header}</h3> :
+            <h3 className="text text_type_digits-default">{header}</h3>
+            }
+        <div className={modalStyles.closeButton}>
+          <CloseIcon type="primary" onClick={closeModal}/>
+        </div>
+      </div>
         {children}
       </div>
       <ModalOverlay onClose={closeModal} />
