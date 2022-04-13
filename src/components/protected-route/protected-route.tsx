@@ -19,9 +19,9 @@ interface IProtectedRouteProps {
   needUserAuth: boolean;
 }
 
-interface ILocationState {
-  from: string
-}
+// interface ILocationState {
+//   from: string
+// }
 
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   children,
@@ -29,7 +29,9 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
 }) => {
   const { userData, redirectPath, needUserAuth, path } = rest;
   const { isAuthChecked } = useSelector(state => state.userReducer);
-  const location = useLocation<ILocationState>();
+  // const location = useLocation<ILocationState>();
+
+  const location = useLocation<{ from: { pathname: string }}>();
 
   if (!isAuthChecked) {
     return (
@@ -59,8 +61,8 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   }
 
   return (
-    <Route {...rest}>
-      {children}
-    </Route>
+    <Route {...rest} render={() => {
+      return children
+    }} />
   ) 
 }

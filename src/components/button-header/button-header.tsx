@@ -39,16 +39,21 @@ const ButtonHeader: FunctionComponent<IButtonHeaderProps> = ({ name, children })
   
 
   return (
-    <NavLink 
-      exact
-      to={state.link} 
-      ref={linkRef}
-      className={`${HeaderButtonStyles.text} ${HeaderButtonStyles.link} ${HeaderButtonStyles.textNormal}
-        text text_type_main-default ml-2`} 
-      activeClassName={`${HeaderButtonStyles.link} ${HeaderButtonStyles.activeLink} ${HeaderButtonStyles.text}
-        ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`} >
-      {state.icon}{children}
-    </NavLink> 
+    <>
+      <NavLink 
+        exact
+        to={state.link} 
+        ref={linkRef}
+        className={`${HeaderButtonStyles.text} ${HeaderButtonStyles.link} ${HeaderButtonStyles.textNormal}
+          text text_type_main-default ml-2`} 
+        activeClassName={`${HeaderButtonStyles.link} ${HeaderButtonStyles.activeLink} ${HeaderButtonStyles.text}
+          ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`} >
+        <>
+          {state.icon}
+          {children}
+        </>
+      </NavLink> 
+    </>
   )
 
 }

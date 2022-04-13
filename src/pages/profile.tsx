@@ -61,7 +61,7 @@ export const ProfilePage: FC = () => {
     e.preventDefault();
     setValue({ ...value, dataChanged: false });
     setCookies();
-    dispatch(changeUserData(value.name, value.email, value.password))
+    dispatch(changeUserData(value.name || '', value.email || '', value.password))
   }
 
   const onCancel = (e: SyntheticEvent<Element>) => {

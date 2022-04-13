@@ -1,9 +1,10 @@
 import { TWsStates } from "../reducers/wsReducer";
-import { AnyAction, Middleware, MiddlewareAPI } from "redux";
+import { AnyAction, MiddlewareAPI } from "redux";
 import { AppDispatch } from "../types";
 import { RootState } from "../types";
 import { Dispatch, FC } from "react";
 import { TWSActions } from "../action-types/wsActionTypes";
+import { Middleware } from "redux";
 
 
 type TwsActions = {
