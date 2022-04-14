@@ -1,20 +1,10 @@
-import { TWsStates } from "../reducers/wsReducer";
 import { AnyAction, MiddlewareAPI } from "redux";
 import { AppDispatch } from "../types";
 import { RootState } from "../types";
-import { Dispatch, FC } from "react";
-import { TWSActions } from "../action-types/wsActionTypes";
+import { Dispatch } from "react";
 import { Middleware } from "redux";
+import { TwsActions } from "../..";
 
-
-type TwsActions = {
-  wsInit: string,
-  onOpen: string,
-  onClose: string,
-  onError: string,
-  onMessage: string,
-  wsSendMessage: string
-}
 
 export const socketMiddleware = (wsActions: TwsActions): Middleware => {
   return (store: MiddlewareAPI<AppDispatch, RootState>) => {

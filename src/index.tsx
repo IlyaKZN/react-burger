@@ -25,7 +25,17 @@ import {
   FEED_SEND_MESSAGE
 } from './services/action-types/wsActionTypes';
 
-const ordersActions = {
+
+export type TwsActions = {
+  wsInit: typeof ORDERS_CONNECTION_START | typeof FEED_CONNECTION_START,
+  onOpen: typeof ORDERS_CONNECTION_SUCCESS | typeof FEED_CONNECTION_SUCCESS,
+  onClose: typeof ORDERS_CONNECTION_CLOSED | typeof FEED_CONNECTION_CLOSED,
+  onError: typeof ORDERS_CONNECTION_ERROR | typeof FEED_CONNECTION_ERROR,
+  onMessage: typeof ORDERS_GET_MESSAGE | typeof FEED_GET_MESSAGE,
+  wsSendMessage: typeof ORDERS_SEND_MESSAGE | typeof FEED_SEND_MESSAGE
+}
+
+const ordersActions: TwsActions = {
   wsInit: ORDERS_CONNECTION_START,
   wsSendMessage:ORDERS_SEND_MESSAGE,
   onOpen: ORDERS_CONNECTION_SUCCESS,
@@ -34,7 +44,7 @@ const ordersActions = {
   onMessage: ORDERS_GET_MESSAGE
 };
 
-const feedActions = {
+const feedActions: TwsActions = {
   wsInit: FEED_CONNECTION_START,
   wsSendMessage: FEED_SEND_MESSAGE,
   onOpen: FEED_CONNECTION_SUCCESS,

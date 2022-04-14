@@ -78,8 +78,4 @@ export type TFeedSActions =
   | IFeedConnectionSuccessAction
   | IFeedGetMessageAction
   | IFeedSendMessageAction
-
-export type TWSActions = 
-  | TFeedSActions
-  | TOrdersActions
   

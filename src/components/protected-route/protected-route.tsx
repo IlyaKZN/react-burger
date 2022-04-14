@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Route, Redirect } from "react-router";
 import { useSelector } from "../../services/types/hooks";
-import { useRouteMatch, useHistory, useLocation } from "react-router";
-import { state } from "../..";
+import { useLocation } from "react-router";
 
 interface IProtectedRouteProps {
   path: string;
@@ -61,6 +60,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   }
 
   return (
+    // @ts-ignore
     <Route {...rest} render={() => {
       return children
     }} />
