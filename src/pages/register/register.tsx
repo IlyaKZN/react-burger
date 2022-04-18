@@ -1,9 +1,9 @@
-import formStyles from './form.module.css';
+import formStyles from '.././form.module.css';
 import { useState, ChangeEvent, FC, SyntheticEvent } from 'react';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch } from '../services/types/hooks';
-import { register } from '../services/actions/authorization';
+import { useDispatch } from '../../services/types/hooks';
+import { register } from '../../services/actions/authorization';
 
 interface IRegisterPage {
   email: string;

@@ -157,7 +157,7 @@ const BurgerConstructor: FC = () => {
 
   const modal = (
     <>
-      <Modal typeModal="orderNumber" closeModal={closeModal}>
+      <Modal closeModal={closeModal} headerType='text' header="">
         <OrderDetails />
       </Modal>
     </>

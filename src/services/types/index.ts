@@ -2,6 +2,8 @@ import { state } from "../..";
 import { TAppActions } from "../actions";
 import { ThunkAction } from 'redux-thunk';
 import { Action, ActionCreator } from 'redux';
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 export type RootState = ReturnType<typeof state.getState>;
 
@@ -20,6 +22,23 @@ export type TIngredientData = {
   _id: string;
 };
 
+export type TOrderData = {
+  "ingredients": string[],
+  "_id": string,
+  "status": string,
+  "number": number,
+  "name": string,
+  "createdAt": string,
+  "updatedAt": string
+}
+
+export type TOrdersData = {
+"success": boolean,
+"orders": TOrderData[],
+"total": number,
+"totalToday": number
+}
+
 export type TUniqueIngredientData = {
   item: { el: TIngredientData; id: string };
 };
@@ -30,4 +49,4 @@ export type AppThunk<TReturn = void> = ActionCreator<
   ThunkAction<TReturn, Action, RootState, TApplicationActions>
 >; 
 
-export type AppDispatch = typeof state.dispatch; 
+export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;

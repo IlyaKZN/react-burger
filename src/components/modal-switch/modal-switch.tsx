@@ -1,5 +1,5 @@
 import { Switch, useLocation, Route } from "react-router";
-import { IngredientPage } from "../../pages/ingredient-page";
+import { IngredientPage } from "../../pages/ingredient-page/ingredient-page";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 

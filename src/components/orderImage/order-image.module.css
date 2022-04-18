@@ -1,0 +1,39 @@
+.imageEl {
+  height: 64px;
+  width: 64px;
+  box-sizing: border-box;
+  border: 2px solid #801AB2;
+  border-radius: 100px;
+  object-fit: cover;
+  position: relative;
+  background: #131316;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.wrapper > div {
+  z-index: 10;
+}
+
+.sixthImg {
+  border: none;
+  border-radius: none;
+  opacity: 0.5;
+}
+
+.sixthImgWrapper {
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 100px;
+  border: 2px solid #801AB2;
+  height: 64px;
+  width: 64px;
+}
+
+.cover {
+  position: absolute;
+  top: 17px;
+  left: 17px;
+}

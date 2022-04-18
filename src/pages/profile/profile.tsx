@@ -7,10 +7,10 @@ import {
   PasswordInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "../services/types/hooks";
-import { changeUserData } from "../services/actions/authorization";
-import { setCookie, getCookie } from "../utils/cookie-utils";
-import { logoutUser } from "../services/actions/authorization";
+import { useSelector, useDispatch } from "../../services/types/hooks";
+import { changeUserData } from "../../services/actions/authorization";
+import { setCookie, getCookie } from "../../utils/cookie-utils";
+import { ProfileMenu } from "../../components/profile-menu/profile-menu";
 
 interface IProfilePage {
   name?: string;
@@ -24,8 +24,6 @@ export const ProfilePage: FC = () => {
   const { data } = useSelector(state => state.userReducer)
   const name = data?.user.name;
   const email = data?.user.email;
-
-  console.log('profileLoaded')
 
   const [value, setValue] = useState<IProfilePage>({
     name: name,
@@ -63,7 +61,7 @@ export const ProfilePage: FC = () => {
     e.preventDefault();
     setValue({ ...value, dataChanged: false });
     setCookies();
-    dispatch(changeUserData(value.name, value.email, value.password))
+    dispatch(changeUserData(value.name || '', value.email || '', value.password))
   }
 
   const onCancel = (e: SyntheticEvent<Element>) => {
@@ -71,48 +69,11 @@ export const ProfilePage: FC = () => {
     setValue({ ...value, name: getCookie('initialName'), email: getCookie('initialEmail'), password: '', dataChanged: false })
   }
 
-  const onLogout = () => {
-    dispatch(logoutUser());
-  }
-
-  
-
   return (
     <div className={styles.profile}>
-      <div className={`${styles.content} mt-30`}>
-        <div className={`${styles.linksContainer} mr-15`}>
-          <ul className={styles.links}>
-            <li className={styles.elementLink}>
-              <NavLink
-                to="/profile"
-                className={`${styles.link} text text_type_main-medium`}
-                activeClassName={styles.activeLink}
-              >
-                Профиль
-              </NavLink>
-            </li>
-            <li className={styles.elementLink}>
-              <NavLink
-                to="/profile/orders"
-                className={`${styles.link} text text_type_main-medium`}
-              >
-                История заказов
-              </NavLink>
-            </li>
-            <li className={styles.elementLink}>
-              <button
-                className={`${styles.link} text text_type_main-medium`}
-                onClick={onLogout}
-              >
-                Выход
-              </button>
-            </li>
-          </ul>
-          <p className="text text_type_main-default text_color_inactive">
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </div>
-        <form className={styles.inputContainer} onSubmit={onSubmit}>
+      <div className={`${styles.content}`}>
+        <ProfileMenu />
+        <form className={`${styles.inputContainer} mt-30`} onSubmit={onSubmit}>
           <Input
             type={"text"}
             placeholder={"Имя"}
@@ -121,8 +82,6 @@ export const ProfilePage: FC = () => {
             value={value.name? value.name : 'placeholder'}
             name={"name"}
             error={false}
-            // ref={inputRef}
-            // onIconClick={onIconClick}
             errorText={"Ошибка"}
             size={"default"}
           />

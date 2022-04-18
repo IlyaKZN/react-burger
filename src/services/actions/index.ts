@@ -130,7 +130,7 @@ export type TAppActions =
 
 
 
-export const getIngredients: AppThunk = () => {
+export const getIngredients = () => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
@@ -151,7 +151,7 @@ export const getIngredients: AppThunk = () => {
   };
 }
 
-export const getOrder: AppThunk = (idList: string[]) => {
+export const getOrder = (idList: string[]) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_ORDER_REQUEST,
