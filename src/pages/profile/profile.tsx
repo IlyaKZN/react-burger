@@ -7,10 +7,10 @@ import {
   PasswordInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "../services/types/hooks";
-import { changeUserData } from "../services/actions/authorization";
-import { setCookie, getCookie } from "../utils/cookie-utils";
-import { ProfileMenu } from "../components/profile-menu/profile-menu";
+import { useSelector, useDispatch } from "../../services/types/hooks";
+import { changeUserData } from "../../services/actions/authorization";
+import { setCookie, getCookie } from "../../utils/cookie-utils";
+import { ProfileMenu } from "../../components/profile-menu/profile-menu";
 
 interface IProfilePage {
   name?: string;

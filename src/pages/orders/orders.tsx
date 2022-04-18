@@ -1,11 +1,11 @@
 import styles from './orders.module.css';
-import { ProfileMenu } from "../components/profile-menu/profile-menu";
-import { OrderFeed } from '../components/order-feed/order-feed';
-import { useDispatch, useSelector } from '../services/types/hooks';
+import { ProfileMenu } from "../../components/profile-menu/profile-menu";
+import { OrderFeed } from '../../components/order-feed/order-feed';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { FC, useEffect } from 'react';
-import { ORDERS_CONNECTION_START, ORDERS_CONNECTION_CLOSED } from '../services/action-types/wsActionTypes';
-import { Preloader } from '../components/preloader/preloader';
-import { getCookie } from '../utils/cookie-utils';
+import { ORDERS_CONNECTION_START, ORDERS_CONNECTION_CLOSED } from '../../services/action-types/wsActionTypes';
+import { Preloader } from '../../components/preloader/preloader';
+import { getCookie } from '../../utils/cookie-utils';
 
 export const OrdersPage: FC = () => {
 

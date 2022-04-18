@@ -1,12 +1,12 @@
 import React, { useState, ChangeEvent, FC, SyntheticEvent, useEffect } from "react";
-import formStyles from "./form.module.css";
+import formStyles from ".././form.module.css";
 import { EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { login } from "../services/actions/authorization";
+import { login } from "../../services/actions/authorization";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router";
-import { useSelector } from "../services/types/hooks";
+import { useSelector } from "../../services/types/hooks";
 import { Redirect } from "react-router";
 
 interface ILoginPage {

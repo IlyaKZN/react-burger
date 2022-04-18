@@ -1,12 +1,12 @@
 import styles from './order-info-page.module.css';
-import { OrderInfo } from "../components/order-Info/order-info";
+import { OrderInfo } from "../../components/order-Info/order-info";
 import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "../services/types/hooks";
-import { ORDERS_CONNECTION_START, ORDERS_CONNECTION_CLOSED, FEED_CONNECTION_START, FEED_CONNECTION_CLOSED } from "../services/action-types/wsActionTypes";
+import { useDispatch, useSelector } from "../../services/types/hooks";
+import { ORDERS_CONNECTION_START, ORDERS_CONNECTION_CLOSED, FEED_CONNECTION_START, FEED_CONNECTION_CLOSED } from "../../services/action-types/wsActionTypes";
 import { useParams } from 'react-router';
-import { Preloader } from '../components/preloader/preloader';
+import { Preloader } from '../../components/preloader/preloader';
 import { useLocation } from 'react-router';
-import { getCookie } from '../utils/cookie-utils';
+import { getCookie } from '../../utils/cookie-utils';
 
 export const OrderInfoPage: FC = () => {
 

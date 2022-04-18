@@ -18,17 +18,12 @@ interface IProtectedRouteProps {
   needUserAuth: boolean;
 }
 
-// interface ILocationState {
-//   from: string
-// }
-
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   children,
   ...rest
 }) => {
   const { userData, redirectPath, needUserAuth, path } = rest;
   const { isAuthChecked } = useSelector(state => state.userReducer);
-  // const location = useLocation<ILocationState>();
 
   const location = useLocation<{ from: { pathname: string }}>();
 
@@ -60,7 +55,6 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   }
 
   return (
-    // @ts-ignore
     <Route {...rest} render={() => {
       return children
     }} />

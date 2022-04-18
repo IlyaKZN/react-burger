@@ -1,10 +1,10 @@
 import styles from './feed.module.css';
-import { OrderFeed } from '../components/order-feed/order-feed';
-import { useSelector, useDispatch } from '../services/types/hooks';
+import { OrderFeed } from '../../components/order-feed/order-feed';
+import { useSelector, useDispatch } from '../../services/types/hooks';
 import { FC, useEffect } from 'react';
-import { FEED_CONNECTION_START, FEED_CONNECTION_CLOSED } from '../services/action-types/wsActionTypes';
-import { OrdersData } from '../components/orders-data/orders-data';
-import { Preloader } from '../components/preloader/preloader';
+import { FEED_CONNECTION_START, FEED_CONNECTION_CLOSED } from '../../services/action-types/wsActionTypes';
+import { OrdersData } from '../../components/orders-data/orders-data';
+import { Preloader } from '../../components/preloader/preloader';
 
 
 export const Feed: FC = () => {

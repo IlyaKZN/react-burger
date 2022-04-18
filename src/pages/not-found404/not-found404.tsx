@@ -1,4 +1,4 @@
-import burgerFace from '../images/Burger404.svg';
+import burgerFace from '../../images/Burger404.svg';
 import styles from './not-found404.module.css';
 import { Link } from 'react-router-dom';
 import { FC } from 'react';

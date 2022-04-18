@@ -1,10 +1,10 @@
-import formStyles from './form.module.css';
+import formStyles from '.././form.module.css';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { ChangeEvent, FC, SyntheticEvent, useState } from 'react';
-import { requestPasswordChange } from '../services/actions/authorization';
+import { requestPasswordChange } from '../../services/actions/authorization';
 import { useDispatch } from 'react-redux';
-import { useSelector } from '../services/types/hooks';
+import { useSelector } from '../../services/types/hooks';
 import { Redirect, useLocation } from 'react-router';
 
 export const ForgotPasswordPage: FC = () => {

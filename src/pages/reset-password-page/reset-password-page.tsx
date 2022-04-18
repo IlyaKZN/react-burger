@@ -1,10 +1,10 @@
-import formStyles from './form.module.css';
+import formStyles from '.././form.module.css';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useState, ChangeEvent, SyntheticEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { resetPassword } from '../services/actions/authorization';
+import { resetPassword } from '../../services/actions/authorization';
 import { useDispatch } from 'react-redux';
-import { useSelector } from '../services/types/hooks';
+import { useSelector } from '../../services/types/hooks';
 import { Redirect, useLocation } from 'react-router';
 
 interface IResetPasswordPage {

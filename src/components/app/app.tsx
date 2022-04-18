@@ -7,25 +7,25 @@ import { getIngredients } from "../../services/actions";
 import { useSelector, useDispatch } from "../../services/types/hooks";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { LoginPage } from "../../pages/login";
-import { RegisterPage } from "../../pages/register";
-import { ForgotPasswordPage } from "../../pages/forgot-password-page";
-import { ResetPasswordPage } from "../../pages/reset-password-page";
-import { ProfilePage } from "../../pages/profile";
+import { Route, Switch } from 'react-router-dom';
+import { LoginPage } from "../../pages/login/login";
+import { RegisterPage } from "../../pages/register/register";
+import { ForgotPasswordPage } from "../../pages/forgot-password-page/forgot-password-page";
+import { ResetPasswordPage } from "../../pages/reset-password-page/reset-password-page";
+import { ProfilePage } from "../../pages/profile/profile";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { checkUserAuthorization } from "../../services/actions/authorization";
-import { IngredientPage } from "../../pages/ingredient-page";
-import { OrdersPage } from "../../pages/orders";
+import { IngredientPage } from "../../pages/ingredient-page/ingredient-page";
+import { OrdersPage } from "../../pages/orders/orders";
 import { useLocation } from "react-router";
 import { useHistory } from "react-router";
-import { NotFound404 } from "../../pages/not-found404";
+import { NotFound404 } from "../../pages/not-found404/not-found404";
 import Modal from "../modal/modal";
 import IngredientDetails from "../Ingredient-details/Ingredient-details";
 import { Preloader } from "../preloader/preloader";
-import { Feed } from "../../pages/feed";
+import { Feed } from "../../pages/feed/feed";
 import { OrderInfo } from "../order-Info/order-info";
-import { OrderInfoPage } from "../../pages/order-info-page";
+import { OrderInfoPage } from "../../pages/order-info-page/order-info-page";
 
 interface ILocationState {
   from: string,
