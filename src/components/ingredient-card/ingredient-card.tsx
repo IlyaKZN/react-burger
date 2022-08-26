@@ -84,23 +84,3 @@ const IngredientCard: FC<IIngredientCardProps> = ({
 };
 
 export default IngredientCard;
-
-{
-  /* <Link to={`/ingredients/${el._id}`} className={ingredientStyles.link}>
-        <Counter count={state.countIngredient} size="default" />
-        <div className={`pl-4 pr-4`}>
-          <img
-            src={el.image}
-            className={`${ingredientStyles.image}`}
-            alt={`Изображение ингридиента ${el.name}`}
-          />
-          <div className={`${ingredientStyles.priceContainer} mt-1 mb-1`}>
-            <p className="text text_type_digits-default">{el.price}</p>
-            <CurrencyIcon type="primary" />
-          </div>
-        </div>
-        <h4 className={`${ingredientStyles.name} text text_type_main-small`}>
-          {el.name}
-        </h4>
-        </Link> */
-}

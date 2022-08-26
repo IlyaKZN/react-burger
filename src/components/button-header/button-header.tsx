@@ -29,7 +29,7 @@ const ButtonHeader: FunctionComponent<IButtonHeaderProps> = ({ name, children })
         setState({ ...state, link: '/', icon: <BurgerIcon type={path === '/' ? 'primary' : 'secondary'} />});
         break;
       case "list":
-        setState({ ...state, link: '/qwerty', icon: <ListIcon type={path === '/qwerty' ? 'primary' : 'secondary'}/> });
+        setState({ ...state, link: '/feed', icon: <ListIcon type={path === '/feed' ? 'primary' : 'secondary'}/> });
         break;
       case "profile":
         setState({ ...state, link: '/profile', icon: <ProfileIcon type={path === '/profile' ? 'primary' : 'secondary'}/> });
@@ -39,16 +39,21 @@ const ButtonHeader: FunctionComponent<IButtonHeaderProps> = ({ name, children })
   
 
   return (
-    <NavLink 
-      exact
-      to={state.link} 
-      ref={linkRef}
-      className={`${HeaderButtonStyles.text} ${HeaderButtonStyles.link} ${HeaderButtonStyles.textNormal}
-        text text_type_main-default ml-2`} 
-      activeClassName={`${HeaderButtonStyles.link} ${HeaderButtonStyles.activeLink} ${HeaderButtonStyles.text}
-        ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`} >
-      {state.icon}{children}
-    </NavLink> 
+    <>
+      <NavLink 
+        exact
+        to={state.link} 
+        ref={linkRef}
+        className={`${HeaderButtonStyles.text} ${HeaderButtonStyles.link} ${HeaderButtonStyles.textNormal}
+          text text_type_main-default ml-2`} 
+        activeClassName={`${HeaderButtonStyles.link} ${HeaderButtonStyles.activeLink} ${HeaderButtonStyles.text}
+          ${HeaderButtonStyles.textNormal} text text_type_main-default ml-2`} >
+        <>
+          {state.icon}
+          {children}
+        </>
+      </NavLink> 
+    </>
   )
 
 }

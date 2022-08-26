@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Route, Redirect } from "react-router";
 import { useSelector } from "../../services/types/hooks";
-import { useRouteMatch, useHistory, useLocation } from "react-router";
-import { state } from "../..";
+import { useLocation } from "react-router";
 
 interface IProtectedRouteProps {
   path: string;
@@ -19,17 +18,14 @@ interface IProtectedRouteProps {
   needUserAuth: boolean;
 }
 
-interface ILocationState {
-  from: string
-}
-
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   children,
   ...rest
 }) => {
   const { userData, redirectPath, needUserAuth, path } = rest;
   const { isAuthChecked } = useSelector(state => state.userReducer);
-  const location = useLocation<ILocationState>();
+
+  const location = useLocation<{ from: { pathname: string }}>();
 
   if (!isAuthChecked) {
     return (
@@ -59,8 +55,8 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   }
 
   return (
-    <Route {...rest}>
-      {children}
-    </Route>
+    <Route {...rest} render={() => {
+      return children
+    }} />
   ) 
 }

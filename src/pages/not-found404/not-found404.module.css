@@ -1,0 +1,16 @@
+.page {
+  padding-top: 120px;
+  max-width: 1240px;
+  display: flex;
+  margin: 0 auto;
+}
+
+.burgerFace {
+  max-width: 400px;
+  margin-right: 150px;
+}
+
+.link {
+  color: #801AB2;
+  text-decoration: none;
+}

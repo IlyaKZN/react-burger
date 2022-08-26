@@ -259,7 +259,7 @@ export const login = (userData: { email: string; password: string }) => {
   };
 };
 
-export const requestPasswordChange: AppThunk = (email: string) => {
+export const requestPasswordChange = (email: string) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_PASSWORD_CHANGE_ACTIVE,
@@ -282,7 +282,7 @@ export const requestPasswordChange: AppThunk = (email: string) => {
   };
 };
 
-export const resetPassword: AppThunk = (password: string, code: string) => {
+export const resetPassword = (password: string, code: string) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST,
@@ -305,7 +305,7 @@ export const resetPassword: AppThunk = (password: string, code: string) => {
   };
 };
 
-export const changeUserData: AppThunk = (
+export const changeUserData = (
   name: string,
   email: string,
   password: string
@@ -330,7 +330,7 @@ export const changeUserData: AppThunk = (
   };
 };
 
-export const getUser: AppThunk = () => {
+export const getUser = () => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_USER_REQUEST,
