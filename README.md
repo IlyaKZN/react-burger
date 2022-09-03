@@ -10,7 +10,7 @@
 * Отслеживать ленту заказов в реальном времени
 * Посмотреть в профиле свою историю заказов
 
-![gif](https://s1.gifyu.com/images/Burger1.gif)
+<img alt="gif" width=80% src="https://s1.gifyu.com/images/Burger1.gif"/>
 
 Проект был сделан с целью изучения фрейморка React.js, а также библиотеки react-dnd и websocket-соединения.
 
