@@ -1,7 +1,7 @@
 # Stellar burger
 
 ## Учебный проект "космической бургерной"<br />
-**[Демо проекта]("https://react-burger-ashy.vercel.app/")**
+**[Демо проекта](https://react-burger-ashy.vercel.app/)**
 
 
 Реализованный функционал :
